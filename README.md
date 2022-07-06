@@ -1,8 +1,7 @@
-# Anchors
+This is the repository for my personal website, project archive, journal and wiki [WastingMoves](http://wastingmoves.com).  
 
-This is the repository for my personal website, project archive, journal and wiki [nchrs](http://nchrs.xyz).  
-Nchrs is a static website generated with a fork of [oscean](https://github.com/XXIIVV/Oscean).
-The original code is by Devine Lu Linvega and modified to support a custom set of markdown, linked images, and a few other adaptions.
+WastingMoves is a static website generated with a fork of [nchrs](https://git.sr.ht/~rostiger/nchrs/), which was forked from [oscean](https://github.com/XXIIVV/Oscean).
+The original code is by Clemens Scott and Devine Lu Linvega. I've tweaked the link formatting, switched to a dark theme, and added a custom markdown entry to increase Persian font sizes for readability.
 
 ## License
 The main branch is the **live version**.
