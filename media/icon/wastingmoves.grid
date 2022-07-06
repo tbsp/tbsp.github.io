@@ -1,0 +1,120 @@
+{
+  "settings": {
+    "size": {
+      "width": 975,
+      "height": 960
+    }
+  },
+  "layers": [
+    [
+      {
+        "type": "line",
+        "vertices": [
+          {
+            "x": 15,
+            "y": 105
+          },
+          {
+            "x": 30,
+            "y": 30
+          },
+          {
+            "x": 60,
+            "y": 90
+          },
+          {
+            "x": 90,
+            "y": 30
+          },
+          {
+            "x": 105,
+            "y": 105
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "type": "line",
+        "vertices": [
+          {
+            "x": 15,
+            "y": 15
+          },
+          {
+            "x": 30,
+            "y": 90
+          },
+          {
+            "x": 60,
+            "y": 30
+          },
+          {
+            "x": 90,
+            "y": 90
+          },
+          {
+            "x": 105,
+            "y": 15
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "type": "line",
+        "vertices": [
+          {
+            "x": 15,
+            "y": 15
+          },
+          {
+            "x": 15,
+            "y": 105
+          },
+          {
+            "x": 105,
+            "y": 105
+          },
+          {
+            "x": 105,
+            "y": 15
+          },
+          {
+            "x": 15,
+            "y": 15
+          }
+        ]
+      }
+    ]
+  ],
+  "styles": [
+    {
+      "thickness": 15,
+      "strokeLinecap": "round",
+      "strokeLinejoin": "round",
+      "color": "#888888",
+      "fill": "none",
+      "mirror_style": 0,
+      "transform": "rotate(45)"
+    },
+    {
+      "thickness": 15,
+      "strokeLinecap": "round",
+      "strokeLinejoin": "round",
+      "color": "#2a2a2a",
+      "fill": "none",
+      "mirror_style": 0,
+      "transform": "rotate(45)"
+    },
+    {
+      "thickness": 15,
+      "strokeLinecap": "round",
+      "strokeLinejoin": "round",
+      "color": "#ffffff",
+      "fill": "#ffffff",
+      "mirror_style": 0,
+      "transform": "rotate(45)"
+    }
+  ]
+}
