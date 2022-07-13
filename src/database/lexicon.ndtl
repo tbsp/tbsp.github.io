@@ -57,13 +57,141 @@ SHOCK LOBSTER
 	HOST : interactive
 	BREF : A simple action game for Game Boy
 	BODY
-		### Overview
-		Shock Lobster is an action game developed for the Game Boy as an entry to the Game Boy Competition 2021.
+		# Overview
+		{^img games/shock_lobster/title.png}
+		Shock Lobster is an action game developed for the Game Boy as an entry to the {https://gbdev.io/gbcompo21.html Game Boy Competition 2021}.
 		Gameplay centers around using a variety of skills to deal maximum damage while avoiding oncoming obstables, trying to reach the highest possible score before defeat.
-		### Development
-		My motivation for the game was semi-complicated skill priority systems in MMORPG games. While using the skills isn't challenging (hold the dpad and press a button), using them effectively to maximize output takes some practice.
-		Initially the game had 8 damage/buff skills, but that left no way to lose. My solution was to sacrifice a single skill and replace it with a single-button movement ability (jump/jet), along with randomzied obstacles so the player couldn't focus entirely on dealing damage.
-		The pearl collection mechanic was added to provide a collectible currency which could be spent in-game. This was inspired somewhat by games like Jetpack Joyride, and for a while I was planning to add a quest/level mechanic, but it never quite felt right and in the end I ran out of time to implement it. The pearls were re-purposed as a skill unlock/upgrade tool, which I feel gives the game a decent ramp up without throwing too much complexity at the player out of the gates.
+		# Design & Development
+		My motivation for the game was semi-complicated skill priority systems in MMORPG games. While using the skills isn't challenging (hold the D-pad and press a button), using them effectively to maximize output takes some practice.
+		Development took place over 3 months during the competition, with a few minor fixes released after the competition deadline. Although I'd been involved in Game Boy development from 1997 to 2004, I'd only recently returned in early 2021 and found a renewed interest in the platform.
+		Compared to my earlier Game Boy work I'm now using a modern makefile with recipes to streamline asset conversion, compression, table generation, and linking. I'm also leaving a lot more up to RGBDS to figure out, which saves a lot of time when trying to pack a game into 32 KiB (see below).
+
+		# Visual/Gameplay Effect Analysis
+		What follows is a look at a variety of the effects and gameplay of the game from a development perspective, in the context of working within the restrictions of the Game Boy hardware.
+		When the screenshots presented here include more than 4 colors (or shades), the different palettes are used to indicate if the elements are drawn using the background (B&W), window (yellow), or hardware sprites (red). Use of the window in Game Boy games tends to be limited to top/bottom/right side HUDs, athough in many cases top/bottom HUDs will require disabling sprites via a scanline interrupt, at which point scroll registers and the active tilemap could easily be adjusted as well to merely use the background, so the use of the window isn't strickly necessary.
+		Since Shock Lobster tries to use the window in more creative ways, colorizing it with a distinct palette can be useful for demonstration purposes.
+
+		## Bootup Logo Effect
+		After the Game Boy bootrom executes, the system hands over control with the Nintendo logo tiles in VRAM, and the logo tilemap loaded. It's up to the game to clear the logo, but sometimes games choose to play with a bit.
+		To split the logo five ways I replaced the (R) symbol with a sprite, cleared the tile underneath, copied the right half of the logo tilemap to the second tilemap, enabled the window overlapping the right half of the logo, cleared the half of the logo left underneath, and then started animating things.
+		{^img games/shock_lobster/boot_color1.png}
+		I start out splitting the logo vertically, which by itself would only require adjusting the vertical scroll register, and then adjust the horizontal scroll and window horizontal position as well to introduce a horizontal split. The movements are all read from lookup tables in ROM.
+		{^img games/shock_lobster/boot_color2.png}
+
+		## Scanline Interrupts
+		The Game Boy has what's called a programmable scanline interrupt. There are a few ways it can be setup, but the way we'll be using it fires the interrupt when the scanline (LY) matches the value in the LYC register.
+		We'll be storing what I call a "raster table" in WRAM, which is comprised of sets of values representing:
+		+ Horizontal scroll value (SCX)
+		+ Window X position value (WX)
+		+ LCD Controller value (LCDC)
+		+ LY Compare (LYC) for the following entry
+		When the interrupt fires we're at the start of the scanline, but we can't safely set all the registers we want to at that point. So we setup for the register writes and then run a loop which is timed to drop us off at a safe point in HBlank at the ~end~ of the scanline, then quickly set the 4 registers and return. This wastes almost an entire scanline waiting for each raster table entry!
+		Why would we do such a thing?! The scanline interrupt can even be programmed to fire when HBlank starts, why not use that? The problem there is once our interrupt handler has control it has to push registers to the stack to protect their contents, check if we're at the LY line we're interested in, point to the correct raster table entry, and finally set the 4 registers. There simply isn't enough time to do all that in HBlank (active sprites cut into HBlank time, and we occasionally have quite a few of them).
+		This setup is used for almost all the effects in Shock Lobster, by dynamically changing the contents of the raster table as needed. Note that the raster table doesn't include the vertical scroll register, SCY. There were a few effects I wanted to include using SCY, but I couldn't fit the write into the interrupt handler, and instead did what I could with SCX/WX/LCDC.
+
+		## Title Screen
+		{^img games/shock_lobster/title_color.png}
+		The titlescreen uses a classic horizontal scroll effect with two lookup tables generated at different frequencies and amplitudes to add an extra wobble feeling, meant to evoke a sense of being underwater.
+		I expected to have to come up with something clever to render the seaweed, but to my surprise when using the 8x16 sprite mode I could stack 9 sprites vertically 4 times to span the full height of the screen, using only 36 of the 40 total hardware sprites.
+		I tried to come up with tiles that would look good enough when wobbling back and forth without having to worry about their relative position, and I think the effect works out well in the end.
+		To try to make things a little less deterministic the initial position of the seaweed columns is randomized. The columns of sprites also alternate priority bits an an attempt to make them appear to surround the logo.
+
+		## Status Screen
+		This screen may appear simple, and it's not exactly complicated, but it tries to pack the skill row, upgrade row, and item/options row into a screen along with some fairly lengthy detail text.
+
+		### Overall Structure
+		{^img games/shock_lobster/status_color1.png}
+		The main icon panel is on the background layer, with the top bar and details screen drawn using the window. This allows me to keep the current pearl count visible at the top while scrolling the rows up and down to show the current row when the details panel is expanded.
+		To smooth movement on this panel out a bit, all cursor and panel movements move half the distance to their target location per frame, which gives a slight decelleration to the movements.
+		Note that even though both the background and window are used, they share a single tilemap. In order to pull this off using only the background I'd need to have SCY as an entry in the raster table, so that I could dynamically adjust it at several points during the frame. By using the window I can set the window vertical position (WY) outside the interupt handler, and then toggle the window on/off as required throughout the frame.
+		{^img games/shock_lobster/status_tilemap.png}
+		I discovered while working on this game that turning off the window mid-frame via the LCDC register but keeping WX such that it lines up with SCX in certain ways would push an extra color 0 pixel out the PPU. To avoid this quirk, whenever I disable the window I also set WX to a value greater than 166. This was discovered late in development, and since I could effectively disable the window only with WX, the ~only~ thing the LCDC entry in the raster table is truly needed for is drawing the wide laser (see below).
+
+		### Fitting All the Text
+		To fit the text I searched all over for a font tiny enough to pack in all the text that also had a little flair to it. {https://mounirtohami.itch.io/minimalpixel-font MinimalPixel} by Mounir Tohami fit the bill! To render the variable-width font (VWF) in the game, I used the excellent {https://github.com/ISSOtm/gb-vwf gb-vwf} library by ISSOtm.
+		One issue I ran into with VWF was rendering the longer skill descriptions would take several frames, which would block menu inputs and make the screen feel unresponsive. My solution was to set an optional "yield line", and if the VWF renderer was past that line after rendering a character it would set a 1 frame delay and continue from that point on the subsequent frame.
+		{^img games/shock_lobster/status_color2.png}
+		An interesting side-effect of that addition was that sometimes the VBlank handler (called as a result of the VBlank interrupt at line 144) would finish in fewer than 10 lines (the duration of VBlank), especially when music was disabled, and the text engine would yield immediately, since the current line would be >144. The fix for that issue ended up being amusingly simple: I call `halt` in the main loop once, which waits until the next interrupt, and since the raster lookup is configured to disable the window layer on line 8 (after the first row of tiles is shown), text rendering starts just after that handler returns, having wasted very little time and ensuring the yield is never falsely triggered!
+		{^img games/shock_lobster/status_color3.png}
+		As it stands all the text ends up filling tile VRAM near to the breaking point! The first block of tiles (used only for sprites in Shock Lobster) has quite a bit of space to spare. If I'd needed to squeeze more text on this screen I could have expanded into the first block and used a mid-screen LCDC write to switch blocks, but luckily that wasn't necessary.
+		{^img games/shock_lobster/status_tiles.png}
+
+		### Getting Players to Press Select
+		The hardest game design component of this screen to get right is getting players to press `Select` to expand out the details panel, which contains some very important gameplay details. In the end I settled on bouncing in an indicator if the player's high score was less than 1000, or they hadn't yet pressed Select during this power cycle. People still fail to realize they can expand the details panel all the time, and I'm not sure how to improve it. I'd considered starting this screen with the panel visible, but felt it hid the multiple rows of items in a manner that was even more confusing.
+
+		# Gameplay
+
+		## Drawing the Large Enemy
+		On any modern playform drawing a "large" (32x32) enemy wouldn't be remotely noteworthy. Depending on circumstances it can be a bit of a challenge on the Game Boy. There are two limitations which can present problems: A maximum of 40 sprites can be used at once, and only 10 sprites can be visible on a scanline at a time. In this case only the later presents a problem.
+		{^img games/shock_lobster/gameplay_color1.png}
+		I knew I wanted to have damage numbers popping out of the enemy, plus have the player sprite on the same line, and obstacles scrolling across the screen. Between the player and two obstacles we're already at 6 sprites per line (each is 16x16, requiring 2 sprites in 8x16 sprite mode), and with damage numbers generally taking 2 sprites we'd hit the 10 sprite/line limit quite often.
+		So, how do we include an additional 32x32 enemy on the same line? A common trick in older games is to use the entire background layer to draw a large boss enemy, with the background entirely blank. I wanted to use the actual background to show scrolling terrain and collectable pearls, so I looked to the often maligned window "layer".
+		I put layer in quotes because people often expect the window to be capable of transparency or other fancy tricks. The truth is it's quite limited and really just an alternate background tilemap (or the same tilemap positioned differently) which the PPU can draw from starting at a given horizontal position, and continuing to the right edge of the screen. As long as the enemy stays touching (or off) the right side of the screen, and mostly fills the space it occupies, the effect can be reasonably convincing.
+		{^img games/shock_lobster/gameplay_1.png}
+		Moving the enemy around is accomplished by making adjustments to the raster lookup table. One quirk of the window is the current tilemap position when drawing the window only advances when the window is enabled on the current scanline ~and~ at least one column of pixels is on-screen. When the enemy is defeated a single line of it is left visible when loading the new enemy, or the lower portion of the screen would look like a total mess during the transition. This specific window quirk is the main reason Shock Lobster has problems running on less accurate emulators, as very few games seem to depend on it so developers can easily get away without capturing it correctly.
+		Luckily the tiles for an entire enemy can be copied safely within a single frame when spawning without having to be clever. This image from {https://emulicious.net/ Emulicious'} event viewer shows the STAT checks (green) for VRAM access, as well as the VRAM writes (purple) to perform the full tile copy. The yellow region on the left is the OAM scan mode, the light green region on the right is HBlank, and the cyan region on the bottom is VBlank.
+		{^img games/shock_lobster/vram_copy.png}
+
+		## Drawing a Wide Laser
+		So we've got the player, obstacles, damage numbers maxing out the sprite limit per line, and a large enemy drawn with the window. Now we want to draw a ~wide~ laser across the screen when attacks are used. How can we accomplish that?
+		My solution was to fill the second tilemap with a bunch of dark grey tiles in the space between the player and the enemy, and set the raster table to swap the background between the two tilemaps for a few scanlines, then back again. The horizontal scroll register is also adjusted to give the laser a sense of movement, with each attack using a slightly different width and scroll combination (the difference is pretty subtle).
+		{^img games/shock_lobster/gameplay_color2.png}
+		If you look closely you can see the area to the left of the player has a thin white line when the laser is visible, but given how light the background terrain is this is generally not very obvious (especially on actual hardware).
+
+		## Changing the Scrolling Terrain
+		Years ago I recalled hearing about how Super Mario Bros used the same tiles for both the bushes and the clouds. Inspired by this I drew a single continuous background image which I hoped would tell the story of movement from the depths of the sea to an area above the clouds, reusing portions of the tiles to represent different terrain.
+		{^img games/shock_lobster/terrain.png}
+		The tilemap representing the background is uncompressed to WRAM on startup, and when a new enemy is spawned a pointer is adjusted to indicate the top row of the tilemap to pull from when streaming in new terrain from the right. The transition can be a little rough, but it's generally over pretty quickly and the player is too busy playing the game to worry about how seamless the background is.
+
+		## Smoothly Scrolling Timer Bars
+		After all the other hoops we've jumped through these bars end up being a pretty straightforward affair. These bars could have been rendered as the enemy health and energy bars were, using a set of static tiles, but in order to texture the tiles we will once again depend on the raster table!
+		The action button panel on the right is drawn using the window, so the background can be scrolled as needed to show the appropriate bar position. Each skill uses a distinct lookup table to scroll its bar as needed given they have different maximum durations. In addition, the "focus" skill can show both the 4 second skill duration and the lengthy cooldown duration. To accomplish this, a second bar is present on the background tilemap, with scroll values to match.
+		{^img games/shock_lobster/gameplay_2.png}
+		The image above shows the tilemap containing the bars, with vertical lines indicating the region visible due to the horizontal scroll setting at that scanline. The following image shows the end result on-screen for the same state.
+		{^img games/shock_lobster/gameplay_3.png}
+
+		## Eight Quick Actions with Only Two Action Buttons
+		From the start I knew I wanted to have a fairly large number of actions available to the player at any one time without requiring them to navigate a menu. My solution was four pairs of actions, selectable using the D-pad, with A and B used to activate either action in the current pair.
+		{^img games/shock_lobster/action_buttons.png}
+		Initially there was no jump/jet action, but without a way to fail the game didn't seem to have much point. I looked around for games based around a single button, and Flappy Bird was a pretty obvious source for inspiration. One action was sacrificed to add the jump action, and obstacles were added to give the player a way to fail.
+		Given how challenging the jumping aspect of the game can be, it may be surprising to learn that it wasn't part of the original concept!
+
+		## Variable Speed Gameplay
+		In order to ramp up the difficulty, the game starts at a fairly slow pace and gradually speeds up. To ensure the physics of the collisions remained reliable this is accomplished by using a fixed point "physics delta". Each frame the delta is applied and a number of physics updates equal to the integer portion of the fixed point value are performed.
+		The delta is increased at different intervals based on the selected game speed. The three speed settings were tuned around an intended game session duration for the "2" setting, and then slower/faster rates for the other two settings.
+
+		# Keeping Things Small
+		The Game Boy can only access up to 32 KiB of ROM at a time. Early games were often only 32 KiB, with later games using memory bank controllers (MBCs), which generally keep the first 16 KiB in place (ROM0), and change the bank the second 16 KiB points to (ROMX).
+		As a personal challenge, I chose to limit Shock Lobster to 32 KiB, which would allow it to be used on a wider range of flashcarts. Code tends to not expand too quickly, though it still helps to avoid being wasteful. Assets (graphics, music, levels, text) are where space is often quickly eaten up. To fit the game a variety of techniques were employed.
+		At this point (version 1.3), {https://github.com/bbbbbr/romusage romusage} by bbbbbr reports 100 bytes free between ROM0 and ROM_0. The initial release was packed even tighter but I've found some space savings since then.
+		> Bank           Range             Size   Used   Used%   Free  Free%
+		> ----------     ----------------  -----  -----  -----  -----  -----
+		> ROM            0x0000 -> 0x3FFF  16384  16327   99%      57     0% |############################|
+		> ROM_0          0x4000 -> 0x7FFF  16384  16341   99%      43     0% |###########################-|
+		> VRAM_0         0x8000 -> 0x9FFF   8192   5152   62%    3040    37% |###-...##############.......|
+		> XRAM_0         0xA000 -> 0xBFFF   8192     56    0%    8136    99% |............................|
+		> WRAM           0xC000 -> 0xCFFF   4096   3182   77%     914    22% |#################-#---......|
+		> WRAM_1_0       0xD000 -> 0xDFFF   4096   1216   29%    2880    70% |-.--#####-.................-|
+		> HRAM           0xFF80 -> 0xFFFE    127     46   36%      81    63% |###########-................|
+		## PB16 Compression
+		PinoBatch's PB16 compression was used to compress:
+		+ Dimmed skill icon tiles
+		+ Options icon tiles
+		+ The background graphics and tilemap
+		+ The enemy tiles
+		+ Title screen tiles
+		## VWF Dictionary
+		The skill/upgrade descriptions contain a lot of redundant text, and text takes up a ~lot~ of space. The previous sentence would take 99 bytes if stored raw, more than the space required for 6 uncompressed 8x8 tiles!
+		To fit all the descriptions in I added a dictionary feature to the VWF library, allowing me to store certain strings only once and then refer to them via indicies. There are likely even more efficient approaches, but this method worked well enough for my purposes.
+		## Obstacle Animation Paths
+		The obstacle animations paths are stored as a series of deltaX/deltaY pairs, applied at each physics timestep. By tweaking the paths used to generate the data I was able to limit each delta to a range of -1 (0xff) to 2 (0x02), which takes only 2 bits per value to store. This allows two deltaX/deltaY pairs to be stored in a single byte, cutting the ROM space requirement down by 4 (compared to how they're stored in WRAM once unpacked).
+		## Pearl Patterns
+		Each vertical strip of pearls is stored as bits in a single byte, allowing for up to 8 pearls per column, and keeping their memory footprint fairly small. This could be further reduced by mirroring patterns at runtime instead of storing both variations (where applicable).
+		The pearl patterns are generated by a script which parses PNG files made up of a leading row which defines the 0/1 color values, and then 8 rows of an arbitrary length. This allows new patterns to be quickly created in any image editor and automatically fed into the game.
+		## Music
+		Luckily I had placeholder music in the game for most of the development, because with days remaining before the competition deadline I found out that music data can take a ~lot~ more ROM space than I'd anticipated.
+		Fitting in short tunes for the game over and high score states still required trimming them down to be quite short and hand-editing music pattern tables to reuse a shared "empty" pattern.
+		In the future I'd like to look into compressing music data in ROM, as I ended up with quite a bit of spare WRAM and suspect I could free up 1-2 KiB of ROM by compressing the current music.
 
 	LINKS
 		itch : https://tbsp.itch.io/shock-lobster
@@ -296,7 +424,9 @@ NOW
 	HOST : personal
 	BREF : What I'm currently working on.
 	BODY
-		Single-page UXM (paper UXM computer) SVG layout
+		+ Potential charting feature for {https://git.sr.ht/~rabbits/nebu nebu}
+		+ Closing off main gameplay loop in match-3 game for Game Boy
+		+ Single-page UXM (paper UXM computer) SVG layout
 
 GOALS
 	HOST : personal

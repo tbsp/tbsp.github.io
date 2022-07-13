@@ -4,12 +4,23 @@
 <title>wastingmoves</title>
 <link>https://wastingmoves.com/journal.html</link>
 <description>Updates and progress on various projects and day to day events.</description>
-<lastBuildDate>Wed, 06 Jul 2022 00:00:00 +0100</lastBuildDate>
+<lastBuildDate>Tue, 12 Jul 2022 00:00:00 +0100</lastBuildDate>
 <image>
   <url>https://wastingmoves.com/media/icon/rss.png</url>
   <title>Updates and progress on various projects and day to day events.</title>
   <link>https://wastingmoves.com//journal.html</link>
 </image>
+<item>
+  <title>Wrote up Shock Lobster development notes</title>
+  <link>https://wastingmoves.com/shock_lobster.html</link>
+  <guid isPermaLink='false'>journal/220712</guid>
+  <pubDate>Tue, 12 Jul 2022 00:00:00 +0100</pubDate>
+  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <description>
+<![CDATA[<figure><a href='https://wastingmoves.com/media/journal/220712.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/220712-680.png'/></a><figcaption>220712: Wrote up Shock Lobster development notes</figcaption></figure>
+<p>Filed under <i>interactive/<a href='https://wastingmoves.com/shock_lobster.html'>shock_lobster</a>: A simple action game for Game Boy</i></p>]]>
+  </description>
+</item>
 <item>
   <title>Initial release of uxngb</title>
   <link>https://wastingmoves.com/uxngb.html</link>
