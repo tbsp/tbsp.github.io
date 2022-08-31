@@ -23,7 +23,7 @@ INTERACTIVE
 DEVELOPMENT
 	HOST : projects
 	TYPE : img_portal
-	BREF : Single purpose software development.
+	BREF : Focused tinkering.
 
 ALBUMS
 	HOST : projects
@@ -52,6 +52,24 @@ THEORY
 	HOST : knowledge
 	BREF : The Foundation.
 	TYPE : img_portal
+
+SIMPLE GB ASM EXAMPLES
+	HOST : development
+	BREF : A collection of simple GB assembly examples
+	BODY
+		# Motivation
+		There's no shortage of Game Boy assembly tutorials on the internet, but as knowledge of the system has evolved and expanded over the decades since its release many of the older tutorials contain either misleading or incorrect information. While demand for lengty tutorials is strong, I've found sometimes people merely want a simple, self-contained example to examine and run.
+		I've put together what are meant to be {https://github.com/tbsp/simple-gb-asm-examples simple examples} demonstrating commonly used hardware features of the Game Boy to serve this purpose. These aren't meant to replace {https://eldred.fr/gb-asm-tutorial/ more extensive tutorials}, but merely to supplement them or help those who would prefer something more bite-sized.
+
+		# Additional Comments
+		Even knowing I wanted to keep things simple I quickly got caught up and the vblank example includes some "fancy" sine table tricks to generate a neat spinning sprite effect. Hopefully it doesn't distract from demonstration of the vblank interrupt itself!
+
+		# Moving Foward
+		Much like other examples/tutorials on this subject, mine aren't particularly deep. I have a list of future examples I'd like to get to, including grid collision, scrolling, fixed-point movement, and more. Naturally they will have to wait for inspiration to strike when free time permits.
+
+	LINKS
+		simple-gb-asm-examples : https://github.com/tbsp/simple-gb-asm-examples
+		gb-asm-tutorial : https://eldred.fr/gb-asm-tutorial/
 
 SHOCK LOBSTER
 	HOST : interactive
@@ -424,9 +442,8 @@ NOW
 	HOST : personal
 	BREF : What I'm currently working on.
 	BODY
-		+ Potential charting feature for {https://git.sr.ht/~rabbits/nebu nebu}
-		+ Closing off main gameplay loop in match-3 game for Game Boy
-		+ Single-page UXM (paper UXM computer) SVG layout
+		+ Kicking around ideas for a {https://itch.io/jam/minicubejam04 MinicubeJam04} entry
+		+ Extensive polish and bug fixing on my match-3 game for Game Boy
 
 GOALS
 	HOST : personal

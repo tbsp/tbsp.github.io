@@ -8,6 +8,8 @@
 #define LOGMEM 4096 * 4
 #define ITEMS 128 /* Note: Extended to support my insane tabletop collection */
 
+#define JORNAL_HOST_LENGTH 24
+
 #define NAME "wastingmoves"
 #define DOMAIN "https://wastingmoves.com/"
 #define LOCATION "Vancouver, Canada"
@@ -1151,7 +1153,7 @@ parse_journal(FILE *fp, Block *block, Lexicon *lex, Journal *jou)
 		if(len > 1024)
 			return errorid("Log is too long", line, len);
 		l = makelog(&jou->logs[jou->len++], push(block, strm(sstr(line, buf, 0, 6))));
-		l->term = findterm(lex, strm(sstr(line, buf, 7, 20)));
+		l->term = findterm(lex, strm(sstr(line, buf, 7, JORNAL_HOST_LENGTH)));
 		path[0] = '\0';
 		scat(path, "journal/");
 		scat(path, l->date);
@@ -1167,7 +1169,7 @@ parse_journal(FILE *fp, Block *block, Lexicon *lex, Journal *jou)
 		} else
 			return error("Couldn't open image", path);
 		if(len >= 29)
-			l->name = push(block, strm(sstr(line, buf, 27, len)));
+			l->name = push(block, strm(sstr(line, buf, 7 + JORNAL_HOST_LENGTH + 1, len)));
 	}
 	printf(":%d ", count);
 	return 1;
