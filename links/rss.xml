@@ -4,12 +4,22 @@
 <title>wastingmoves</title>
 <link>https://wastingmoves.com/journal.html</link>
 <description>Updates and progress on various projects and day to day events.</description>
-<lastBuildDate>Tue, 30 Aug 2022 00:00:00 +0100</lastBuildDate>
+<lastBuildDate>Tue, 06 Sep 2022 00:00:00 +0100</lastBuildDate>
 <image>
   <url>https://wastingmoves.com/media/icon/rss.png</url>
   <title>Updates and progress on various projects and day to day events.</title>
   <link>https://wastingmoves.com//journal.html</link>
 </image>
+<item>
+  <title>Made a postfix calculator for Minicub64</title>
+  <guid isPermaLink='false'>journal/220906</guid>
+  <pubDate>Tue, 06 Sep 2022 00:00:00 +0100</pubDate>
+  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <description>
+<![CDATA[<figure><a href='https://wastingmoves.com/media/journal/220906.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/220906-680.png'/></a><figcaption>220906: Made a postfix calculator for Minicub64</figcaption></figure>
+]]>
+  </description>
+</item>
 <item>
   <title>Put together some simple GB ASM examples</title>
   <link>https://wastingmoves.com/simple_gb_asm_examples.html</link>

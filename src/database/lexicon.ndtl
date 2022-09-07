@@ -58,7 +58,7 @@ SIMPLE GB ASM EXAMPLES
 	BREF : A collection of simple GB assembly examples
 	BODY
 		# Motivation
-		There's no shortage of Game Boy assembly tutorials on the internet, but as knowledge of the system has evolved and expanded over the decades since its release many of the older tutorials contain either misleading or incorrect information. While demand for lengty tutorials is strong, I've found sometimes people merely want a simple, self-contained example to examine and run.
+		There's no shortage of Game Boy assembly tutorials on the internet, but as knowledge of the system has evolved and expanded over the decades since its release many of the older tutorials contain either misleading or incorrect information. While demand for lengthy tutorials is strong, I've found sometimes people merely want a simple, self-contained example to examine and run.
 		I've put together what are meant to be {https://github.com/tbsp/simple-gb-asm-examples simple examples} demonstrating commonly used hardware features of the Game Boy to serve this purpose. These aren't meant to replace {https://eldred.fr/gb-asm-tutorial/ more extensive tutorials}, but merely to supplement them or help those who would prefer something more bite-sized.
 
 		# Additional Comments
