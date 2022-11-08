@@ -45,7 +45,7 @@
 <p>To build the website, a bash script called <code>build.sh</code> needs to be executed. It compiles <code>main.c</code>, runs the executable that outputs the content of <code>databases/lexicon.ndtl</code> and <code>databases/glossary.ndtl</code> to single HTML files and finally removes the executable again. <code>clang-format</code> formats the code before compilation.</p>
 <p>WastingMoves supports responsive images and lazyloading to preserve bandwidth. The original images are stored in <code>src/media/</code> and are converted to appropriate sizes and dithered by the <code>batchVariants</code> bash script using imagemagick. Note that this script must be run before <code>build.sh</code> for the media directory to be populated.</p>
 <p>GIFs are converted the MP4 using <code>ffmpeg</code> within the <code>makeVideo</code> script.</p>
-<p>All of the above scripts are executed when the <code>deploy.sh</code> is called. Additionally this script deploys the files to the webserver utilising rsync.</p>
+<p>All of the above scripts are executed when the <code>deploy.sh</code> is called. The whole repository (including build artifacts) is then committed to Github, where it's hosted as a Github pages site.</p>
 <h2><a href='license.html'>license</a></h2>
 <sub>License.</sub>
 <h2><a href='markdown.html'>markdown</a></h2>
@@ -59,7 +59,7 @@
 </p>
 </main>
 <footer>
-<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Tue Sep  6 21:30:54 2022
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Mon Nov  7 21:01:11 2022
 </em>
 <hr />
 <section>

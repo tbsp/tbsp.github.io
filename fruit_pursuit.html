@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta name='description' content='A match 3 game for Game Boy' />
+<meta name='author' content='Dave VanEe' />
+<meta name='viewport' content='width=device-width, initial-scale=1' />
+<link rel='shortcut icon' type='image/png' href='media/icon/wastingmoves_favicon.png' />
+<link rel='stylesheet' type='text/css' href='links/main.css' />
+<title>wastingmoves: fruit pursuit</title>
+<meta property='og:title' content='fruit pursuit' />
+<meta property='og:type' content='website' />
+<meta property='og:description' content='A match 3 game for Game Boy' />
+<meta property='og:site_name' content='wastingmoves' />
+<meta property='og:url' content='https://wastingmoves.com/fruit_pursuit.html' />
+<meta property='og:image' content='https://wastingmoves.com/media/headers/fruit_pursuit-240.png' />
+</head>
+<body>
+<nav>
+<a href='index.html'><img src='media/icon/wastingmoves.svg' alt='wastingmoves' height='100px' width='100px' /></a>
+<ul>
+<li><b><a href='interactive.html'>interactive/</a></b></li>
+<li><a href='development.html'>development</a></li>
+<li><a href='albums.html'>albums</a></li>
+</ul>
+<ul>
+<li><a href='shock_lobster.html'>shock lobster</a></li>
+<li><b><a href='fruit_pursuit.html'>fruit pursuit/</a></b></li>
+<li><a href='uxngb.html'>uxngb</a></li>
+</ul>
+<ul>
+</ul>
+</nav>
+<main>
+<h1>A match 3 game for Game Boy</h1>
+<figure>
+<a href='media/games/fruit_pursuit/title.png'>
+<img srcset='media/games/fruit_pursuit/title-240.png 240w, media/games/fruit_pursuit/title-680.png 680w, media/games/fruit_pursuit/title-900.png 900w' sizes='(max-width: 480px) 240px, 680px' src='media/games/fruit_pursuit/title-240.png' alt='' loading='lazy'>
+</a>
+</figure>
+<h1>History</h1>
+<p>In 2019 I fell into a Monster Hunter 4 Ultimate hole for a while. I kicked the idea for what kind of Monster Hunter game on Game Boy might be practical (both for myself and the hardware). At some point I decided to try overlaying the meta game (farming materials, crafting) onto an entirely different genre.</p>
+<p>As the match-3 genre hadn't really emerged when the Game Boy was a current system, and homebrew games of that genre so far seemed to use a coarse background based drop animation, I thought I'd try my hand at a smooth dropping animation. After I got the animation working (more on that later), I set about adding the Monster Hunter metagame elements. I'd originally expected the game to take 2 years to make, but as time went on it became clear it'd be far longer.</p>
+<p>I let the project lapse for a while, tinkering with other ideas and working on Shock Lobster, but when early 2022 rolled around I decided it was a shame to let the work I'd put in go to waste, and set about stripping down the game, retheming it, and trying to get something playable out the door.</p>
+<h1>Overview</h1>
+<p>Fruit Pursuit is a fairly simple match-3 game, where a timer bar is constantly draining, matches extend the bar, and you have to match a certain number of each fruit to clear a lap. There are a few mode which tweak the basics, but all work pretty similarly.</p>
+<figure>
+<a href='media/games/fruit_pursuit/gameplay_cgb.png'>
+<img srcset='media/games/fruit_pursuit/gameplay_cgb-240.png 240w, media/games/fruit_pursuit/gameplay_cgb-680.png 680w, media/games/fruit_pursuit/gameplay_cgb-900.png 900w' sizes='(max-width: 480px) 240px, 680px' src='media/games/fruit_pursuit/gameplay_cgb-240.png' alt='' loading='lazy'>
+</a>
+</figure>
+<h1>The Hard Part</h1>
+<p>In a match game, when items are cleared the remaining items (along with new ones, in this case) generally drop down. Existing match games for Game Boy which I could find (<a href='https://github.com/AntonioND/geometrix' target='_blank'>Geometrix</a>, <a href='https://furrtek.itch.io/airaki' target='_blank'>Airaki</a>, etc) animated the dropping by re-writing the background tilemap. While effective, it limits the per-frame movement to 8 pixel increments. My hope was to allow per-pixel smooth animation of the collapse.</p>
+<p>The approach I ended up settling on switches to a tilemap which only has the non-moving items present, and all dropping items are drawn using objects (sprites). The Game Boy only has memory for 40 hardware objects (sprites) at once. In addition, only 10 can be drawn per line. These limitations mean we can only animate dropping up to 5 columns (2 sprites per item) and 4 rows at once before we have to get creative.</p>
+<p>To work around the row limitation we use OAM DMA to copy the topmost 40 sprites, and then use a popslide to copy 4 bytes per scanline once we're far enough down the screen to not clobber the sprites we want to show. Note that since we're often at the 10 sprites/line limit HBlank is quite short, so a popslide is necessary to perform the copy quickly enough.</p>
+<p>To work around the column limitation we use "sprite flickering", which many are familiar from the NES, where it seems to be a more accepted practice. Clearing more than 5 columns at once is fairly uncommon, so this doesn't show up very often. Note that I also implemented a full row clearing animation, since at one stage I was planning to include items to clear entire rows. It used dynamic Y scroll register writes, followed by a transition to the approach described above.</p>
+<p>In addition, the drop animation is performed in two stages, so in cases where at first 6 columns are dropping, and then it changes to 5 or fewer, the flicker will only be present while 6 are actively dropping.</p>
+<p>Note that all the data tracking to advance the objects, determine when they've settled, and generate the OAM data takes quite a bit of time. Getting all that computation performed in time required breaking it into chunks. While waiting to start the manual OAM popslide we first quickly calculate the positions of the new OAM entries as well.</p>
+<h1>Refining Things</h1>
+<figure>
+<a href='media/games/fruit_pursuit/gameplay_dmg.png'>
+<img srcset='media/games/fruit_pursuit/gameplay_dmg-240.png 240w, media/games/fruit_pursuit/gameplay_dmg-680.png 680w, media/games/fruit_pursuit/gameplay_dmg-900.png 900w' sizes='(max-width: 480px) 240px, 680px' src='media/games/fruit_pursuit/gameplay_dmg-240.png' alt='' loading='lazy'>
+</a>
+</figure>
+<p>Although single pixel dropping looks really smooth, it ends up being pretty slow. Later in development a lookup table was added to approximate acceleration due to gravity, drastically speeding up the drop while still retaining a smooth feeling. The table is tweaked slightly from a clean curve to ensure items will always hit every 16 pixel boundary exactly, so I never have to check for overshoot.</p>
+<p>There's also a lot of background tilemap juggling involved to make the effect seamless. The final result looks quite simple, but watching a tilemap viewer in an emulator debugger reveals quite a bit more is going on than it may seem.</p>
+<p>I also managed to find a way to make the fruit tiles, which lean heavily on colour to distinguish each other, look reasonably distinct on the original Game Boy by adding various backdrop shades.</p>
+<h1>Conclusion</h1>
+<p>In the end I'm very happy with where things ended up. I still have a huge list of things I'd like to polish on the game, but it's definitely playable, and I find it reasonably fun.</p>
+<p>Perhaps one day I'll feel compelled to return to the project and tidy up all the loose ends.</p>
+<h3>Links</h3><ul>
+<li><a href='https://tbsp.itch.io/fruit-pursuit' target='_blank'>itch</a></li>
+</ul></main>
+<footer>
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Mon Nov  7 21:01:11 2022
+</em>
+<hr />
+<section>
+<a href='https://creativecommons.org/licenses/by-nc-sa/4.0'><img src='media/icon/cc.svg' /></a>
+<p>Dave VanEe &copy; 2022 <a href='license.html'>CC-BY-NC-SA 4.0</a></p>
+</section>
+</footer>
+</body>
+</html>
