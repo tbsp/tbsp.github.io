@@ -1,5 +1,6 @@
 ;Journal
 ;DATE  HOST                     LOG
+221109 luxnemu                  Got the basic Screen device working in luxnemu
 221020 fruit_pursuit            Released Fruit Pursuit (Beta)
 221010 albums                   Went to a wedding at the end of the world
 220906 minicalc64               Made a postfix calculator for Minicub64
