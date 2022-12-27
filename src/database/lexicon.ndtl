@@ -270,6 +270,40 @@ UXNGB
 		source : https://github.com/tbsp/uxngb
 		uxn : https://wiki.xxiivv.com/site/uxn.html
 
+VARABOY
+	HOST : interactive
+	BREF : A Game Boy emulator for UXN
+	BODY
+		## Background 
+		Although I've been writing software for Game Boy on and off since the late 90s, I've never undertaken a very common related task: writing a Game Boy emulator. For some reason the idea of doing so never seemed particularly appealing, given the available emulators/debuggers always more than fulfilled my needs, and I was more drawn to creating original software for the platform instead (though if I succeeded in that regard is another matter).
+		For some reason that all changed when I was trying to come up with what I considered interesting projects to work on for uxn, and thus Varaboy was born!
+		## Challenges
+		The Game Boy is an incredibly well-documented piece of hardware, with some insanely accurate emulators available. There are still quirks which aren't fully understood, and getting certain games running correctly can be quite tough, but if you just want to emulate the bulk of popular games to a playable degree there isn't too much involved. 
+		Writing a Game Boy emulator for uxn/varvara presents a few somewhat unique challenges, mainly:
+		+ Emulating a device with a 64KiB address space on a device with a 64KiB address space.
+		+ Getting things to run at playable speeds.
+		I don't mean to make either of these seem like particularly hard challenges, but for me they added just the right amount of resistance to make the project enjoyable.
+		## Solutions
+		### Address Space
+		My solution to dealing with the matched address spaces was to take advantage of the ~8KiB echo RAM region on the Game Boy. Essentially as long as I could fit my emulator'a runtime code/data inside the "off-limits" echo RAM region I could leave addresses totally untouched from the Game Boy's perspective, which really helps performance (and simplicity).
+		### Performance
+		Performance was a big unknown when I started this project. I had no idea what to expect. It could have trivially hit 60fps with no effort, or never reached playable speeds on available hardware. The initial release could be considered barely playable on a fast CPU with a frameskip of 3. Luckily I quickly realized what a friend had tried to explain to me, which is that I was checking for visible sprites every pixel instead of once per line. Fixing that issue drastically sped up the PPU (pixel processing unit), allowing for 60fps on a fast CPU. 
+		Shortly after fixing the OAM scan I realized that after every instruction I was advancing the PPU one dot at a time, which would meaning checking for PPU mode advancement 4-24 times per instruction, when nothing about my rendered depending on that precision. Switching to only checking for mode advancement once per instruction almost halved the runtime of the cpu_instrs test ROM, which was another huge boost. 
+		## Future Work
+		At this stage I'm mainly expecting minor performance gains by condensing the uxntal code. 
+		Changing the active ROM bank on hardware is considered instantaneous, so some games bank swap quite often, but Varaboy has to read all preceding banks right now to load the new one. Unpacking banked ROMs on load should improve performance for such games, at the cost of cluttering up the directory.
+		The MBC code could be cleaned up to support larger games as well. 
+		The big missing feature at this stage is sound support. There's about 1KiB of spare echo RAM available right now, which feels like it probably isn't enough for even basic audio support. Having said that I might take a shot at it to see if it can be made at least passable. 
+		### uxngb in Varaboy
+		Although it's totally impractical, it's entirely possible to run uxn ROMs under 8KiB inside uxngb, emulated inside Varaboy in another uxn VM. Sadly the opposite isn't currently possible due to uxngb's 8KiB limit.
+		I'm tempted to make a fork of uxngb which adds full 64KiB support just to get that working, because it'd be pretty amusing. 
+		## Conclusion
+		I've ended up putting more time into Varaboy than I expected to, but also ended up with a far more functional emulator than anticipated. The feeling of getting games I'd played so many times running in something I'd written myself was far more fulfilling than I expected and I'm very glad I took a shot at it.
+
+	LINKS
+		source : https://github.com/tbsp/varaboy
+		uxn : https://wiki.xxiivv.com/site/uxn.html
+
 META
 	HOST : about
 	BREF : About this website.
