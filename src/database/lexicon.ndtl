@@ -249,13 +249,13 @@ FRUIT PURSUIT
 
 UXNGB
 	HOST : interactive
-	BREF : A UXN emulator for Game Boy
+	BREF : A Uxn emulator for Game Boy
 	BODY
 		### Motivation
-		Given the relative simplicity of UXN/Varvara, and my knowledge of the GB/GBC architecture, trying to write a UXN emulator for GB/GBC seemed like a natural fit.
+		Given the relative simplicity of Uxn/Varvara, and my knowledge of the GB/GBC architecture, trying to write a Uxn emulator for GB/GBC seemed like a natural fit.
 		I went in knowing full well that several things were stacked against success:
 		+ No bitmap rendering mode on GB
-		+ Memory typically only addressed 8 KiB at a time (UXN can address a full 64 KiB)
+		+ Memory typically only addressed 8 KiB at a time (Uxn can address a full 64 KiB)
 		+ No second graphical layer which can cover the entire screen with transparency (needed for fully functional foreground layer)
 		+ Relatively slow CPU (with no native MUL/DIV instructions)
 		Despite this I took a shot and am rather pleased with the final result.
@@ -263,7 +263,7 @@ UXNGB
 		### Room for improvement
 		+ Use additional tile VRAM on GBC to expand foreground sprite support
 		+ Use additional DMA features on GBC to speed up VRAM writes
-		+ Use banked external cartridge RAM to support the full UXN memory space
+		+ Use banked external cartridge RAM to support the full Uxn memory space
 		{^img games/uxngb/pong.png}
 
 	LINKS
@@ -272,14 +272,14 @@ UXNGB
 
 VARABOY
 	HOST : interactive
-	BREF : A Game Boy emulator for UXN
+	BREF : A Game Boy emulator for Uxn/Varvara
 	BODY
 		## Background 
 		Although I've been writing software for Game Boy on and off since the late 90s, I've never undertaken a very common related task: writing a Game Boy emulator. For some reason the idea of doing so never seemed particularly appealing, given the available emulators/debuggers always more than fulfilled my needs, and I was more drawn to creating original software for the platform instead (though if I succeeded in that regard is another matter).
-		For some reason that all changed when I was trying to come up with what I considered interesting projects to work on for uxn, and thus Varaboy was born!
+		For some reason that all changed when I was trying to come up with what I considered interesting projects to work on for Uxn, and thus Varaboy was born!
 		## Challenges
 		The Game Boy is an incredibly well-documented piece of hardware, with some insanely accurate emulators available. There are still quirks which aren't fully understood, and getting certain games running correctly can be quite tough, but if you just want to emulate the bulk of popular games to a playable degree there isn't too much involved. 
-		Writing a Game Boy emulator for uxn/varvara presents a few somewhat unique challenges, mainly:
+		Writing a Game Boy emulator for Uxn/Varvara presents a few somewhat unique challenges, mainly:
 		+ Emulating a device with a 64KiB address space on a device with a 64KiB address space.
 		+ Getting things to run at playable speeds.
 		I don't mean to make either of these seem like particularly hard challenges, but for me they added just the right amount of resistance to make the project enjoyable.
@@ -295,14 +295,129 @@ VARABOY
 		The MBC code could be cleaned up to support larger games as well. 
 		The big missing feature at this stage is sound support. There's about 1KiB of spare echo RAM available right now, which feels like it probably isn't enough for even basic audio support. Having said that I might take a shot at it to see if it can be made at least passable. 
 		### uxngb in Varaboy
-		Although it's totally impractical, it's entirely possible to run uxn ROMs under 8KiB inside uxngb, emulated inside Varaboy in another uxn VM. Sadly the opposite isn't currently possible due to uxngb's 8KiB limit.
+		Although it's totally impractical, it's entirely possible to run Uxn ROMs under 8KiB inside uxngb, emulated inside Varaboy in another Uxn VM. Sadly the opposite isn't currently possible due to uxngb's 8KiB limit.
 		I'm tempted to make a fork of uxngb which adds full 64KiB support just to get that working, because it'd be pretty amusing. 
 		## Conclusion
 		I've ended up putting more time into Varaboy than I expected to, but also ended up with a far more functional emulator than anticipated. The feeling of getting games I'd played so many times running in something I'd written myself was far more fulfilling than I expected and I'm very glad I took a shot at it.
 
 	LINKS
 		source : https://github.com/tbsp/varaboy
-		uxn : https://wiki.xxiivv.com/site/uxn.html
+		Uxn : https://wiki.xxiivv.com/site/uxn.html
+
+TAKALAKI
+	HOST : interactive
+	BREF : Takalaki - A personal virtual machine using the Uxn CPU
+	BODY
+		## History
+		Varvara, the first graphical system built around the Uxn CPU strikes a fantastic balanace of simplicity and power in an incredibly lightweight implementation, allowing for some incredibly powerful tools to be created in very little space.
+		I've found writing uxntal (the Uxn assembly language) to be a wonderful experience, but my years of working with tile based systems like the Game Boy have left me itching for a more comfortable display device. In late 2022 I spent a bunch of time thinking about an alternate display device for Varvara based around tiles and tilemaps, allowing for easy scrolling and even raster effects. At the time my focus was ease of implementation of a VM hosted by the Game Boy (or possibly the NES/SMS/GG).
+		After a while I came to terms with the fact that uxntal on GB would likely never be particularly fast, even if I made the display as close to native as possible, and I'd probably resort to writing native GB assembly once I hit that point. After some time away I was reminded of Devine Lu Linvega's hopes that Uxn would inspire people to create their own personal computing platform, and thus Takalaki was born.
+		## Overview
+		Takalaki is a VM much like Varvara. It uses the same Uxn CPU, and many of the devices function identically. I've opted for a collapsed device layout, which eliminates the constraint of 16 ports per device. In addition to revealing how much raw device space is still unused, this allows me to really open up the display capabilities.
+		As Varvara is already a wonderful platform for higher-resolution tools and apps, and Takalaki is mainly geared toward retro-style games, I've limited the maximum resolution to 256x256, and will likely use resolutions closer to the Game Boy's 160x144 for most of my work. This allows many of the device values to be simple bytes instead of shorts, which perhaps isn't a big deal, but gives me a nice fuzzy feeling inside.
+		Instead of two bitmap layers, Takalaki will have two tiled background layers, a sprite layer, and a single bitmap layer. The bitmap layer will retain the raw pixel drawing capability, the sprite feature will be replaced with a blitter, and also have a 2D polygon feature. In addition there will be a window feature to control which of the aforementioned layers will be visible in different regions of the screen.
+		## Controller
+		Deviating from Varvara (and its NES inspiration), Takalaki uses a controller with a dpad, start button, and 3 action buttons. The names of the 3 action buttons are so far not finalized, but options include:
+		+ A, B, C (SEGA Genesis layout)
+		+ X, A, B (Microsoft layout)
+		+ Y, B, A (Nintendo layout)
+		+ Square, Cross, Circle (Sony layout)
+		+ Something totally new, ignoring what will be visible on gamepads people are likely to use
+		There's even a possibility of having tiles representing the buttons exposed to running ROMs such that the user can configure the emulator with the button labels they want, and games can display them easily as button 0/1/2.
+		My hope is that the features commonly mapped to select buttons can be handled by the dpad on menus, or by additional entries on a pause screen. By adding a third primary action button I hope the certain gameplay possibilities will become practical.
+		## Device Layout
+		| Takalaki|
+		| 00| system|
+		| 08| console|
+		| 0a| screen|
+		## System
+		| *port*| *register*| *use*|
+		| 00| halt*|
+		| 02| title*|
+		| 04| metadata*|
+		| 06| debug|
+		| 07| state|
+		## Console
+		| *port*| *register*| *use*|
+		| 08| vector*|
+		| 0a| read|
+		| 0b| write|
+		| 0c| error|
+		## Display
+		The display is insprired heavily by the Game Boy, including two tiled (background) layers and a hardware sprite layer. An additional bitmap layer is also available, along with a window to control layer visibility. A single four-color palette is defined, much like Varvara. The scanline thread can be used to modify the palette mid-screen. This combination ends up giving something more powerful than a GBA in some ways (simultaneous tiled/bitmap layers), but less powerful in others (only a single four-color palette).
+		Unlike the Game Boy, both the background layers can either wrap or crop at the tilemap edges, and can use Varvara-style blend modes. Each background layer can select from one of two 32x32 tilemaps and one of two 256 tile tilesets.
+		Up to 64 sprites can be rendered at once, with no per-line limitations. By default sprites are all 8x8 or 8x16. A large sprite mode can be enabled with `dispctrl` which makes all sprites 16x16 or 16x32. The sprites can also use blend modes, allowing for a variety of fully opaque or semi-transparent combinations. Sprites always use tileset 0 (shared with backgrounds).
+		The bitmap layer can be used alongside all the other layers, not as an alternative to them. Operations are provided to write individual pixels, to blit directly from memory, or to draw 2D polygons to the bitmap layer.
+		The window is a rectangular region defined by left/right/top/bottom values. The `winctrl` port specifies which of the aforementioned layers (bg0, bg1, sprite, bitmap) will be drawn either inside or outside the window (when enabled). By making use of the scanline thread complex window shapes can be created.
+		| *port*| *register*| *use*|
+		| ??| width| display width|
+		| ??| height| display height|
+		| ??| r| 4 red palette components|
+		| ??| g| 4 green palette components|
+		| ??| b| 4 blue palette components|
+		| ??| dispctrl| control visible layers|
+		| ??| bg0ctrl| control aspects of BG0 layer|
+		| ??| bg1ctrl| control aspects of BG1 layer|
+		| ??| winctrl| control aspects of WIN layer|
+		| ??| winLeft| left edge of window|
+		| ??| winRight| right edge of window|
+		| ??| winTop| top edge of window|
+		| ??| winBottom| bottom edge of window|
+		| ??| scrollx0| x scroll for bg0|
+		| ??| scrolly0| y scroll for bg0|
+		| ??| scrollx1| x scroll for bg1|
+		| ??| scrolly1| y scroll for bg1|
+		| ??| x| x coordinate|
+		| ??| y| y coordinate|
+		| ??| addr*| source address for tile/tilemap copies|
+		| ??| auto| flag to automatically advance values|
+		| ??| repeat| number of times to repeat certain operations|
+		| ??| tileID| tileID for sprites, or starting ID when copying tiles|
+		| ??| tilecopy| operation to copy tiles to tile memory|
+		| ??| tilemap| operation to copy tileIDs to tilemap memory|
+		| ??| sprite| operation to create a sprite|
+		| ??| pixel| operation to write a pixel to the bitmap layer|
+		| ??| blit| operation to blit to the bitmap layer|
+		| ??| polygon| operation to draw a polygon to the bitmap layer|
+		| ??| clear| operation to clear the bitmap layer to a given color|
+		### dispctrl
+		> ? ? ? W   B S 1 0<br>    | |   | | | +-- bg0 enable<br>    | |   | | +---- bg1 enable<br>    | |   | +------ sprite enable<br>    | |   +-------- bitmap enable<br>    | +------------ window enable<br>    +-------------- large sprite enable
+		### Tile Copy
+		There are two set of 256 tiles. The background layers can each use either of the tilesets (set with `bgXctrl`), while sprites always use the first tileset. On startup the tilesets are populated with a basic set of tiles for use:
+		+ ASCII font
+		+ Button icons
+		+ System logo
+		+ ???
+		In order to use your own tiles with backgrounds/sprites you'll first have to copy them to the tilesets.
+		To copy tiles to a tileset, set `addr` to the address of the start of your tile data, set `tileID` to the first tileID to copy tiles to, set `repeat` to the number of tiles to copy (???), write ??? to `Display/tilecopy` to perform the copy.
+		### Tilemaps
+		Tilemaps are 32x32 grids of tileIDs which, when combined with the assigned tileset and blend mode, will define how the background layers will render.
+		### Backgrounds
+		By default both background layers will wrap at their edges, but this can be changed to a crop by enabling that layer's crop bit. In addition, if a background layer's priority bit is enabled, all opaque pixels for that layer will be drawn on top of the sprite layer.
+		#### bg0ctrl/bg1ctrl
+		> P C T M   B B B B<br>| | | |   +-+-+-+-- blend<br>| | | +------------ tilemap select<br>| | +-------------- tileset select<br>| +---------------- crop enable<br>+------------------ priority enable
+		### Sprites
+		Sprites are tracked using an internal sprite attribute table. Every frame, if a new sprite operation is issued the entire sprite table is cleared before inserting the new sprite. This may seem needlessly destructive, but in my experience if any sprites in a given frame are updated chances are most of them will be. In addition, due to the lack of per-line sprite limits there's less need to be concerned with sprite layout in memory.
+		Each sprite is defined by:
+		+ X coordinate (-16 offset?)
+		+ Y coordiante (-32 offset?)
+		+ tileID (0-255, sprites always use tileset 0)
+		+ attributes
+		In order to add a new sprite, set the appropriate `x` and `y` coordinates, the `tileID`, and write the attribute byte to the `Display/sprite` port.
+		#### Sprite attributes
+		> P T V H   B B B B<br>| | | |   +-+-+-+-- blend<br>| | | +------------ horizontal flip<br>| | +-------------- vertical flip<br>| +---------------- tall enable<br>+------------------ priority enable (???)
+		### Pixel
+		Pixel writing is very similar to Varvara's screen device.
+		### Blit
+		The blit operation uses a blitter much like ??? to combine data in memory with that already on the bitmap layer to produce complex visuals.
+		### Polygon
+		Heavily inspired by the {https://blazebone.com/pochi/devices.html#poly Pochi poly port}, the polygon port draws a filled or hollow polygon. A hollow polygon may also be unclosed.
+		To draw a polygon, set `addr` to point to an address which specifies the number of corners in the polygon, followed by that many shorts defining the corner coordinates, with the first byte containing the X coordinate, and the second byte containing the Y coordinate. All coordinates are relative to (0,0) at the top left corner of the display.
+		Note: The details of the byte written to `poly` are TBD, but may involve blitter functionality.
+		### Window
+		#### winctrl
+		> B S 1 0   B S 1 0<br>| | | |   | | | +-- bg0 enable (inside)<br>| | | |   | | +---- bg1 enable (inside)<br>| | | |   | +------ sprite enable (inside)<br>| | | |   +-------- bitmap enable (inside)<br>| | | +------------ bg0 enable (outside)<br>| | +-------------- bg1 enable (outside)<br>| +---------------- sprite enable (outside)<br>+------------------ bitmap enable (outside)
+
 
 META
 	HOST : about
@@ -310,7 +425,7 @@ META
 	BODY
 		*wastingmoves.com* is the personal website, digital garden, and {projects project archive} of {personal Dave VanEe}.
 		It was inspired by similar sites scattered across the world wide web (and elsewhere), perhaps driven by nostalgia of a "simpler time" on the internet.
-		Although in time I may spin up my own static site generator, for now I'm using a fork of Clemens Scott's {https://git.sr.ht/~rostiger/nchrs/ Nchrs} code, which was forked from Devine Lu Linvega's {https://github.com/XXIIVV/oscean Oscean} (prior to the transition to {https://wiki.xxiivv.com/site/uxn.html UXN}). I've tweaked the link formatting, switched to a dark theme, and added a custom markdown entry to increase Persian font sizes for readability. Originally I looked into forking Oscean in the current state, but had some issues getting everything working as I wanted.
+		Although in time I may spin up my own static site generator, for now I'm using a fork of Clemens Scott's {https://git.sr.ht/~rostiger/nchrs/ Nchrs} code, which was forked from Devine Lu Linvega's {https://github.com/XXIIVV/oscean Oscean} (prior to the transition to {https://wiki.xxiivv.com/site/uxn.html Uxn}). I've tweaked the link formatting, switched to a dark theme, and added a custom markdown entry to increase Persian font sizes for readability. Originally I looked into forking Oscean in the current state, but had some issues getting everything working as I wanted.
 		WastingMoves is made up of static HTML pages generated by a single-file C program, using human-readable plaintext database files using the ~Tablatal~ and ~Indental~ formats. The sitemap can be found on the {404} page. There's no JavaScript or external content. Many thanks to Clemens Scott for the automatic image processing code, which dramatically reduces the bandwidth load of viewing the website.
 		The website icon was drawn in {https://hundredrabbits.itch.io/dotgrid Dotgrid}, followed by hand edits to the resulting SVG file.
 
@@ -509,14 +624,14 @@ NOW
 	HOST : personal
 	BREF : What I'm currently working on.
 	BODY
-		+ UXN emulator written in FreePascal (Lazarus)
+		+ Personal virtual machine based around the Uxn CPU
 
 GOALS
 	HOST : personal
 	BREF : Looking forward.
 	TYPE : text_portal
 	BODY
-		### Goals 2022
+		### Goals 2023
 		+ Start meditation routine
 		+ Start regular focused Persian practice
 		### Long Term Goals
