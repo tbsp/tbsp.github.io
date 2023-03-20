@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8'>
-<meta name='description' content='A Game Boy emulator for UXN' />
+<meta name='description' content='A Game Boy emulator for Uxn/Varvara' />
 <meta name='author' content='Dave VanEe' />
 <meta name='viewport' content='width=device-width, initial-scale=1' />
 <link rel='shortcut icon' type='image/png' href='media/icon/wastingmoves_favicon.png' />
@@ -10,7 +10,7 @@
 <title>wastingmoves: varaboy</title>
 <meta property='og:title' content='varaboy' />
 <meta property='og:type' content='website' />
-<meta property='og:description' content='A Game Boy emulator for UXN' />
+<meta property='og:description' content='A Game Boy emulator for Uxn/Varvara' />
 <meta property='og:site_name' content='wastingmoves' />
 <meta property='og:url' content='https://wastingmoves.com/varaboy.html' />
 <meta property='og:image' content='https://wastingmoves.com/media/headers/varaboy-240.png' />
@@ -33,13 +33,13 @@
 </ul>
 </nav>
 <main>
-<h1>A Game Boy emulator for UXN</h1>
+<h1>A Game Boy emulator for Uxn/Varvara</h1>
 <h2>Background</h2>
 <p>Although I've been writing software for Game Boy on and off since the late 90s, I've never undertaken a very common related task: writing a Game Boy emulator. For some reason the idea of doing so never seemed particularly appealing, given the available emulators/debuggers always more than fulfilled my needs, and I was more drawn to creating original software for the platform instead (though if I succeeded in that regard is another matter).</p>
-<p>For some reason that all changed when I was trying to come up with what I considered interesting projects to work on for uxn, and thus Varaboy was born!</p>
+<p>For some reason that all changed when I was trying to come up with what I considered interesting projects to work on for Uxn, and thus Varaboy was born!</p>
 <h2>Challenges</h2>
 <p>The Game Boy is an incredibly well-documented piece of hardware, with some insanely accurate emulators available. There are still quirks which aren't fully understood, and getting certain games running correctly can be quite tough, but if you just want to emulate the bulk of popular games to a playable degree there isn't too much involved.</p>
-<p>Writing a Game Boy emulator for uxn/varvara presents a few somewhat unique challenges, mainly:</p>
+<p>Writing a Game Boy emulator for Uxn/Varvara presents a few somewhat unique challenges, mainly:</p>
 <ul>
 <li>Emulating a device with a 64KiB address space on a device with a 64KiB address space.</li>
 <li>Getting things to run at playable speeds.</li>
@@ -57,16 +57,16 @@
 <p>The MBC code could be cleaned up to support larger games as well.</p>
 <p>The big missing feature at this stage is sound support. There's about 1KiB of spare echo RAM available right now, which feels like it probably isn't enough for even basic audio support. Having said that I might take a shot at it to see if it can be made at least passable.</p>
 <h3>uxngb in Varaboy</h3>
-<p>Although it's totally impractical, it's entirely possible to run uxn ROMs under 8KiB inside uxngb, emulated inside Varaboy in another uxn VM. Sadly the opposite isn't currently possible due to uxngb's 8KiB limit.</p>
+<p>Although it's totally impractical, it's entirely possible to run Uxn ROMs under 8KiB inside uxngb, emulated inside Varaboy in another Uxn VM. Sadly the opposite isn't currently possible due to uxngb's 8KiB limit.</p>
 <p>I'm tempted to make a fork of uxngb which adds full 64KiB support just to get that working, because it'd be pretty amusing.</p>
 <h2>Conclusion</h2>
 <p>I've ended up putting more time into Varaboy than I expected to, but also ended up with a far more functional emulator than anticipated. The feeling of getting games I'd played so many times running in something I'd written myself was far more fulfilling than I expected and I'm very glad I took a shot at it.</p>
 <h3>Links</h3><ul>
 <li><a href='https://github.com/tbsp/varaboy' target='_blank'>source</a></li>
-<li><a href='https://wiki.xxiivv.com/site/uxn.html' target='_blank'>uxn</a></li>
+<li><a href='https://wiki.xxiivv.com/site/uxn.html' target='_blank'>Uxn</a></li>
 </ul></main>
 <footer>
-<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Tue Dec 27 14:33:05 2022
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Sun Mar 19 22:08:37 2023
 </em>
 <hr />
 <section>

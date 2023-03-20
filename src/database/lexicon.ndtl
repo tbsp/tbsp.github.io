@@ -48,11 +48,6 @@ ABOUT
 	BODY
 		This {meta website} is my digital garden and personal assistant. It is an ever growing, changing, living document that functions as a repository for {projects}, a personal database for {knowledge knowledge} and {albums memories}.
 
-THEORY
-	HOST : knowledge
-	BREF : The Foundation.
-	TYPE : img_portal
-
 SIMPLE GB ASM EXAMPLES
 	HOST : development
 	BREF : A collection of simple GB assembly examples
@@ -305,119 +300,56 @@ VARABOY
 		Uxn : https://wiki.xxiivv.com/site/uxn.html
 
 TAKALAKI
-	HOST : interactive
+	HOST : development
 	BREF : Takalaki - A personal virtual machine using the Uxn CPU
 	BODY
+		## Status
+		An initial implementation of a single scrollable tile layer along with the scanline vector can be found here in the {https://codeberg.org/tbsp/takalaki Takalaki Codeberg repo}.
 		## History
 		Varvara, the first graphical system built around the Uxn CPU strikes a fantastic balanace of simplicity and power in an incredibly lightweight implementation, allowing for some incredibly powerful tools to be created in very little space.
-		I've found writing uxntal (the Uxn assembly language) to be a wonderful experience, but my years of working with tile based systems like the Game Boy have left me itching for a more comfortable display device. In late 2022 I spent a bunch of time thinking about an alternate display device for Varvara based around tiles and tilemaps, allowing for easy scrolling and even raster effects. At the time my focus was ease of implementation of a VM hosted by the Game Boy (or possibly the NES/SMS/GG).
-		After a while I came to terms with the fact that uxntal on GB would likely never be particularly fast, even if I made the display as close to native as possible, and I'd probably resort to writing native GB assembly once I hit that point. After some time away I was reminded of Devine Lu Linvega's hopes that Uxn would inspire people to create their own personal computing platform, and thus Takalaki was born.
+		I've found writing uxntal (the Uxn assembly language) to be a wonderful experience, but my years of working with tile based systems like the Game Boy have left me itching for a more familiar display device. In late 2022 I spent a bunch of time thinking about an alternate display device for Varvara based around tiles and tilemaps, allowing for easy scrolling and even raster effects. At the time my focus was ease of implementation of a VM hosted by the Game Boy (or possibly the NES/SMS/GG).
+		After a while I came to terms with the fact that uxntal on GB would likely never be particularly fast, even if I made the display as close to native as possible, and I'd probably resort to writing native GB assembly once I hit that point. After some time away I was reminded of Devine Lu Linvega's hopes that Uxn would inspire people to create their own personal computing platform, and Takalaki was born.
+		The initial Takalaki design had a collapsed device port layout, a controller with 3 action buttons (instead of 2), simplified audio devices, and an expanded display device limited to a maximum resolution of 256x256. After a while working on refining the design and starting on the implementation I decided to abandon most of the refinements I'd come up with, and retool Takalaki as a fully backwards compatible Varvara clone with an extended screen device.
 		## Overview
-		Takalaki is a VM much like Varvara. It uses the same Uxn CPU, and many of the devices function identically. I've opted for a collapsed device layout, which eliminates the constraint of 16 ports per device. In addition to revealing how much raw device space is still unused, this allows me to really open up the display capabilities.
-		As Varvara is already a wonderful platform for higher-resolution tools and apps, and Takalaki is mainly geared toward retro-style games, I've limited the maximum resolution to 256x256, and will likely use resolutions closer to the Game Boy's 160x144 for most of my work. This allows many of the device values to be simple bytes instead of shorts, which perhaps isn't a big deal, but gives me a nice fuzzy feeling inside.
-		Instead of two bitmap layers, Takalaki will have two tiled background layers, a sprite layer, and a single bitmap layer. The bitmap layer will retain the raw pixel drawing capability, the sprite feature will be replaced with a blitter, and also have a 2D polygon feature. In addition there will be a window feature to control which of the aforementioned layers will be visible in different regions of the screen.
-		## Controller
-		Deviating from Varvara (and its NES inspiration), Takalaki uses a controller with a dpad, start button, and 3 action buttons. The names of the 3 action buttons are so far not finalized, but options include:
-		+ A, B, C (SEGA Genesis layout)
-		+ X, A, B (Microsoft layout)
-		+ Y, B, A (Nintendo layout)
-		+ Square, Cross, Circle (Sony layout)
-		+ Something totally new, ignoring what will be visible on gamepads people are likely to use
-		There's even a possibility of having tiles representing the buttons exposed to running ROMs such that the user can configure the emulator with the button labels they want, and games can display them easily as button 0/1/2.
-		My hope is that the features commonly mapped to select buttons can be handled by the dpad on menus, or by additional entries on a pause screen. By adding a third primary action button I hope the certain gameplay possibilities will become practical.
-		## Device Layout
-		| Takalaki|
-		| 00| system|
-		| 08| console|
-		| 0a| screen|
-		## System
+		Takalaki is a Varvara clone with an extended screen device with the goal of streamlining development of tile-based games. It's fully backwards compatible with Varvara, with the screen extensions residing in the `0xe0` device range.
+		The two existing bitmap layers (fg and bg) can be used alongside two new tile layers, and can be stacked in any order. The new blitter and polygon operations draw to the fg/bg layers. In addition there will be a window feature to control which of the aforementioned layers will be visible in different regions of the screen. Along with all this is a new vector, which is evaluated before rendering every scanline, allowing for a variety of raster effects.
+		This combination ends up giving something more powerful than a GBA in some ways (simultaneous tiled/bitmap layers), but less powerful in others (only a single four-color palette).
+		Both the tile layers can either wrap or crop at the tilemap edges, and can use Varvara-style blend modes. Each tile layer can be set to have a map with width and height of 16, 32, 64, or 128, and pulls from up to 256 tiles. Each tile layer can optionally be provided with a map of attribute data, allowing per-tile flips, priority, and blending.
+		The window is a rectangular region defined by left/right/top/bottom values. The `winctrl` port specifies which of the aforementioned layers (tile0, tile1, fg, bg) will be drawn either inside or outside the window (when enabled). By making use of the scanline vector complex window shapes can be created.
+		My hope is to first implement the screen extensions based on the reference uxnemu emulator, and later develop my own original emulator with extended debugging tools.
+		### Device Ports
 		| *port*| *register*| *use*|
-		| 00| halt*|
-		| 02| title*|
-		| 04| metadata*|
-		| 06| debug|
-		| 07| state|
-		## Console
-		| *port*| *register*| *use*|
-		| 08| vector*|
-		| 0a| read|
-		| 0b| write|
-		| 0c| error|
-		## Display
-		The display is insprired heavily by the Game Boy, including two tiled (background) layers and a hardware sprite layer. An additional bitmap layer is also available, along with a window to control layer visibility. A single four-color palette is defined, much like Varvara. The scanline thread can be used to modify the palette mid-screen. This combination ends up giving something more powerful than a GBA in some ways (simultaneous tiled/bitmap layers), but less powerful in others (only a single four-color palette).
-		Unlike the Game Boy, both the background layers can either wrap or crop at the tilemap edges, and can use Varvara-style blend modes. Each background layer can select from one of two 32x32 tilemaps and one of two 256 tile tilesets.
-		Up to 64 sprites can be rendered at once, with no per-line limitations. By default sprites are all 8x8 or 8x16. A large sprite mode can be enabled with `dispctrl` which makes all sprites 16x16 or 16x32. The sprites can also use blend modes, allowing for a variety of fully opaque or semi-transparent combinations. Sprites always use tileset 0 (shared with backgrounds).
-		The bitmap layer can be used alongside all the other layers, not as an alternative to them. Operations are provided to write individual pixels, to blit directly from memory, or to draw 2D polygons to the bitmap layer.
-		The window is a rectangular region defined by left/right/top/bottom values. The `winctrl` port specifies which of the aforementioned layers (bg0, bg1, sprite, bitmap) will be drawn either inside or outside the window (when enabled). By making use of the scanline thread complex window shapes can be created.
-		| *port*| *register*| *use*|
-		| ??| width| display width|
-		| ??| height| display height|
-		| ??| r| 4 red palette components|
-		| ??| g| 4 green palette components|
-		| ??| b| 4 blue palette components|
+		| ??| vector*| scanline vector|
 		| ??| dispctrl| control visible layers|
-		| ??| bg0ctrl| control aspects of BG0 layer|
-		| ??| bg1ctrl| control aspects of BG1 layer|
-		| ??| winctrl| control aspects of WIN layer|
-		| ??| winLeft| left edge of window|
-		| ??| winRight| right edge of window|
-		| ??| winTop| top edge of window|
-		| ??| winBottom| bottom edge of window|
-		| ??| scrollx0| x scroll for bg0|
-		| ??| scrolly0| y scroll for bg0|
-		| ??| scrollx1| x scroll for bg1|
-		| ??| scrolly1| y scroll for bg1|
-		| ??| x| x coordinate|
-		| ??| y| y coordinate|
-		| ??| addr*| source address for tile/tilemap copies|
-		| ??| auto| flag to automatically advance values|
-		| ??| repeat| number of times to repeat certain operations|
-		| ??| tileID| tileID for sprites, or starting ID when copying tiles|
-		| ??| tilecopy| operation to copy tiles to tile memory|
-		| ??| tilemap| operation to copy tileIDs to tilemap memory|
-		| ??| sprite| operation to create a sprite|
-		| ??| pixel| operation to write a pixel to the bitmap layer|
+		| ??| winctrl| control layers inside/outside window bounds|
+		| ??| priority| set stacking order of the layers|
+		| ??| position| set tile layer scrolls and window bounds|
+		| ??| mapconfig| configure the tile layer maps|
+		| ??| tileconfig| configure the tile layers|
 		| ??| blit| operation to blit to the bitmap layer|
 		| ??| polygon| operation to draw a polygon to the bitmap layer|
 		| ??| clear| operation to clear the bitmap layer to a given color|
+		| ??| scanline*| current scanline during scanline vector|
 		### dispctrl
-		> ? ? ? W   B S 1 0<br>    | |   | | | +-- bg0 enable<br>    | |   | | +---- bg1 enable<br>    | |   | +------ sprite enable<br>    | |   +-------- bitmap enable<br>    | +------------ window enable<br>    +-------------- large sprite enable
-		### Tile Copy
-		There are two set of 256 tiles. The background layers can each use either of the tilesets (set with `bgXctrl`), while sprites always use the first tileset. On startup the tilesets are populated with a basic set of tiles for use:
-		+ ASCII font
-		+ Button icons
-		+ System logo
-		+ ???
-		In order to use your own tiles with backgrounds/sprites you'll first have to copy them to the tilesets.
-		To copy tiles to a tileset, set `addr` to the address of the start of your tile data, set `tileID` to the first tileID to copy tiles to, set `repeat` to the number of tiles to copy (???), write ??? to `Display/tilecopy` to perform the copy.
-		### Tilemaps
-		Tilemaps are 32x32 grids of tileIDs which, when combined with the assigned tileset and blend mode, will define how the background layers will render.
-		### Backgrounds
-		By default both background layers will wrap at their edges, but this can be changed to a crop by enabling that layer's crop bit. In addition, if a background layer's priority bit is enabled, all opaque pixels for that layer will be drawn on top of the sprite layer.
-		#### bg0ctrl/bg1ctrl
-		> P C T M   B B B B<br>| | | |   +-+-+-+-- blend<br>| | | +------------ tilemap select<br>| | +-------------- tileset select<br>| +---------------- crop enable<br>+------------------ priority enable
-		### Sprites
-		Sprites are tracked using an internal sprite attribute table. Every frame, if a new sprite operation is issued the entire sprite table is cleared before inserting the new sprite. This may seem needlessly destructive, but in my experience if any sprites in a given frame are updated chances are most of them will be. In addition, due to the lack of per-line sprite limits there's less need to be concerned with sprite layout in memory.
-		Each sprite is defined by:
-		+ X coordinate (-16 offset?)
-		+ Y coordiante (-32 offset?)
-		+ tileID (0-255, sprites always use tileset 0)
-		+ attributes
-		In order to add a new sprite, set the appropriate `x` and `y` coordinates, the `tileID`, and write the attribute byte to the `Display/sprite` port.
-		#### Sprite attributes
-		> P T V H   B B B B<br>| | | |   +-+-+-+-- blend<br>| | | +------------ horizontal flip<br>| | +-------------- vertical flip<br>| +---------------- tall enable<br>+------------------ priority enable (???)
-		### Pixel
-		Pixel writing is very similar to Varvara's screen device.
+		> ? ? ? W   B S 1 0<br>    | |   | | | +-- tile0 enable<br>    | |   | | +---- tile1 enable<br>    | |   | +------ fg enable<br>    | |   +-------- bg enable<br>    | +------------ window enable<br>    +-------------- ???
+		### priority
+		Each of the four layers has a priority value from 0-3. Higher priority layers are drawn in front, with lower priority layers drawn behind. By default, the tile0 layer has a priority of 0, the bg layer has a priority of 1, the fg layer has a priority of 2, and the tile1 layer has a priority of 3.
+		> B B F F   1 1 0 0<br>| | | |   | | +-+-- tile0 priority<br>| | | |   +-+------ tile1 priority<br>| | +-+------------ fg priority<br>+-+---------------- bg priority
+		### mapconfig
+		The `mapconfig` port is used to configure the map settings for each tile layer.
+		> H H W W   A C R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set map addr<br>| | | |   | +------ enable crop<br>| | | |   +-------- enable attribute map<br>| | +-+------------ map width (16, 32, 64, 128 tiles)<br>+-+---------------- map height (16, 32, 64, 128 tiles)
+		### tileconfig
+		The `tileconfig` port is used to configure the tiles for each tile layer.
+		> B B B B   ? D R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set tiles addr<br>| | | |   | +------ select tile depth (1bpp/2bpp)<br>| | | |   +-------- Unused<br>+-+-+-+------------ blend mode
+		### position
+		The `position` port is used to transfer the screen x/y values to the tile layer scroll registers and the window edge registers. The value set indicates which scroll registers should be set, with multiple sets being settable at once if the x/y coordinates are the same.
+		> T B L R   Y1 X1 Y0 X0<br>| | | |    |  |  |  +-- tile0 scroll x<br>| | | |    |  |  +----- tile0 scroll y<br>| | | |    |  +-------- tile1 scroll x<br>| | | |    +----------- tile1 scroll y<br>| | | +---------------- window right edge<br>| | +------------------ window left edge<br>| +-------------------- window bottom edge<br>+---------------------- window top edge
 		### Blit
-		The blit operation uses a blitter much like ??? to combine data in memory with that already on the bitmap layer to produce complex visuals.
+		A blitter may be added if I can settle on a style I'm comfortable with.
 		### Polygon
 		Heavily inspired by the {https://blazebone.com/pochi/devices.html#poly Pochi poly port}, the polygon port draws a filled or hollow polygon. A hollow polygon may also be unclosed.
 		To draw a polygon, set `addr` to point to an address which specifies the number of corners in the polygon, followed by that many shorts defining the corner coordinates, with the first byte containing the X coordinate, and the second byte containing the Y coordinate. All coordinates are relative to (0,0) at the top left corner of the display.
-		Note: The details of the byte written to `poly` are TBD, but may involve blitter functionality.
-		### Window
-		#### winctrl
-		> B S 1 0   B S 1 0<br>| | | |   | | | +-- bg0 enable (inside)<br>| | | |   | | +---- bg1 enable (inside)<br>| | | |   | +------ sprite enable (inside)<br>| | | |   +-------- bitmap enable (inside)<br>| | | +------------ bg0 enable (outside)<br>| | +-------------- bg1 enable (outside)<br>| +---------------- sprite enable (outside)<br>+------------------ bitmap enable (outside)
-
+		Note: The details of the byte written to `polygon` are TBD.
 
 META
 	HOST : about
@@ -560,7 +492,6 @@ PHONE
 		## The Future
 		Although I don't think I'm ready to abandon "smart" phones entirely, I definitely do not need a flagship device. Now with a child, having a decent camera on hand which automatically syncs photos to the cloud is something I don't think I'm willing to give up. I'm keeping my eyes on the low-end Android market moving forward, for when this phone eventually ceases to function, but concened the camera won't be quite up to the task.
 
-
 READER
 	HOST : everyday
 	BREF : Barnes & Noble Nook Simple Touch
@@ -600,7 +531,7 @@ READING
 	HOST : directory
 	BREF : The Library.
 	BODY
-		{^list reading list}
+		{^list reading list 2023}
 		{^list childrens books}
 		{^list reading list unfinished}
 
@@ -624,7 +555,7 @@ NOW
 	HOST : personal
 	BREF : What I'm currently working on.
 	BODY
-		+ Personal virtual machine based around the Uxn CPU
+		+ Takalaki, a personal virtual machine based around the Uxn CPU
 
 GOALS
 	HOST : personal
@@ -640,7 +571,7 @@ GOALS
 		+ Create art and tools that contribute in positive ways
 
 LANGUAGE
-	HOST : theory
+	HOST : knowledge
 	BREF : Various notes on language.
 
 PERSIAN
@@ -653,13 +584,8 @@ PERSIAN
 		vs
 		^هیچی نیست^
 
-PRACTICE
-	HOST : knowledge
-	BREF : The Application.
-	TYPE : img_portal
-
 PROGRAMMING
-	HOST : practice
+	HOST : knowledge
 	BREF : Collected notes on programming.
 	TYPE : text_portal
 	BODY

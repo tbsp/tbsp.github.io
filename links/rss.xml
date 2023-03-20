@@ -4,12 +4,23 @@
 <title>wastingmoves</title>
 <link>https://wastingmoves.com/journal.html</link>
 <description>Updates and progress on various projects and day to day events.</description>
-<lastBuildDate>Tue, 27 Dec 2022 00:00:00 +0100</lastBuildDate>
+<lastBuildDate>Sun, 19 Mar 2023 00:00:00 +0100</lastBuildDate>
 <image>
   <url>https://wastingmoves.com/media/icon/rss.png</url>
   <title>Updates and progress on various projects and day to day events.</title>
   <link>https://wastingmoves.com//journal.html</link>
 </image>
+<item>
+  <title>Early work on Takalaki (and lots of Pern books)</title>
+  <link>https://wastingmoves.com/takalaki.html</link>
+  <guid isPermaLink='false'>journal/230319</guid>
+  <pubDate>Sun, 19 Mar 2023 00:00:00 +0100</pubDate>
+  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <description>
+<![CDATA[<figure><a href='https://wastingmoves.com/media/journal/230319.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/230319-680.png'/></a><figcaption>230319: Early work on Takalaki (and lots of Pern books)</figcaption></figure>
+<p>Filed under <i>development/<a href='https://wastingmoves.com/takalaki.html'>takalaki</a>: Takalaki - A personal virtual machine using the Uxn CPU</i></p>]]>
+  </description>
+</item>
 <item>
   <title>Initial release of Varaboy</title>
   <link>https://wastingmoves.com/varaboy.html</link>
@@ -18,7 +29,7 @@
   <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/221210.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/221210-680.png'/></a><figcaption>221210: Initial release of Varaboy</figcaption></figure>
-<p>Filed under <i>interactive/<a href='https://wastingmoves.com/varaboy.html'>varaboy</a>: A Game Boy emulator for UXN</i></p>]]>
+<p>Filed under <i>interactive/<a href='https://wastingmoves.com/varaboy.html'>varaboy</a>: A Game Boy emulator for Uxn/Varvara</i></p>]]>
   </description>
 </item>
 <item>
@@ -93,7 +104,7 @@
   <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/220629.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/220629-680.png'/></a><figcaption>220629: Initial release of uxngb</figcaption></figure>
-<p>Filed under <i>interactive/<a href='https://wastingmoves.com/uxngb.html'>uxngb</a>: A UXN emulator for Game Boy</i></p>]]>
+<p>Filed under <i>interactive/<a href='https://wastingmoves.com/uxngb.html'>uxngb</a>: A Uxn emulator for Game Boy</i></p>]]>
   </description>
 </item>
 </channel></rss>
