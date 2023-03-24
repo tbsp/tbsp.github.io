@@ -336,7 +336,7 @@ RASTER DEVICE
 		| 03| winctrl| control layers inside/outside window bounds|
 		| 04| position| set tile layer scrolls and window bounds|
 		| 05| mapconfig| configure the tile layer maps|
-		| 06| tileconfig| configure the tile layers|
+		| 06| tileconfig| configure the tile layer tiles|
 		| 07| blit| operation to blit to the bitmap layer [planned]|
 		| 08| polygon| operation to draw a polygon to the bitmap layer [planned]|
 		| 09| fill| operation to fill the bitmap layers [planned]|
