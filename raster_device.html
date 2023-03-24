@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta name='description' content='A Uxn raster device that builds on top of the Varvara screen device' />
+<meta name='author' content='Dave VanEe' />
+<meta name='viewport' content='width=device-width, initial-scale=1' />
+<link rel='shortcut icon' type='image/png' href='media/icon/wastingmoves_favicon.png' />
+<link rel='stylesheet' type='text/css' href='links/main.css' />
+<title>wastingmoves: raster device</title>
+<meta property='og:title' content='raster device' />
+<meta property='og:type' content='website' />
+<meta property='og:description' content='A Uxn raster device that builds on top of the Varvara screen device' />
+<meta property='og:site_name' content='wastingmoves' />
+<meta property='og:url' content='https://wastingmoves.com/raster_device.html' />
+<meta property='og:image' content='https://wastingmoves.com/media/headers/raster_device-240.png' />
+</head>
+<body>
+<nav>
+<a href='index.html'><img src='media/icon/wastingmoves.svg' alt='wastingmoves' height='100px' width='100px' /></a>
+<ul>
+<li><a href='simple_gb_asm.html'>simple gb asm</a></li>
+<li><b><a href='takalaki.html'>takalaki/</a></b></li>
+</ul>
+<ul>
+<li><a href='history.html'>history</a></li>
+<li><b><a href='raster_device.html'>raster device/</a></b></li>
+</ul>
+<ul>
+</ul>
+</nav>
+<main>
+<h1>A Uxn raster device that builds on top of the Varvara screen device</h1>
+<h3>Raster Device Ports</h3>
+<table>
+<tr>
+<td><b>port</b></td>
+<td><b>register</b></td>
+<td><b>use</b></td>
+</tr>
+<tr>
+<td>00</td>
+<td>vector*</td>
+<td>raster vector</td>
+</tr>
+<tr>
+<td>02</td>
+<td>dispctrl</td>
+<td>control visible layers</td>
+</tr>
+<tr>
+<td>03</td>
+<td>winctrl</td>
+<td>control layers inside/outside window bounds</td>
+</tr>
+<tr>
+<td>04</td>
+<td>position</td>
+<td>set tile layer scrolls and window bounds</td>
+</tr>
+<tr>
+<td>05</td>
+<td>mapconfig</td>
+<td>configure the tile layer maps</td>
+</tr>
+<tr>
+<td>06</td>
+<td>tileconfig</td>
+<td>configure the tile layers</td>
+</tr>
+<tr>
+<td>07</td>
+<td>blit</td>
+<td>operation to blit to the bitmap layer [planned]</td>
+</tr>
+<tr>
+<td>08</td>
+<td>polygon</td>
+<td>operation to draw a polygon to the bitmap layer [planned]</td>
+</tr>
+<tr>
+<td>09</td>
+<td>fill</td>
+<td>operation to fill the bitmap layers [planned]</td>
+</tr>
+<tr>
+<td>0e</td>
+<td>scanline*</td>
+<td>current scanline during raster vector</td>
+</tr>
+</table>
+<h3>vector</h3>
+<p>The raster vector is evaluated at the start of every scanline if the address is set. The scanline port can be read to determine the current scanline inside the raster vector handler. During the raster vector any changes to dispctrl, winctrl, position, mapconfig, tileconfig, or the system palette will take effect from that scanline forward.</p>
+<h3>dispctrl</h3>
+<p>Controls which layers are visible. Layers front-to-back in the order: fg > bg > tile0 > tile1.</p>
+<pre>
+x x x W   F B 1 0<br>| | | |   | | | +-- tile1 enable<br>| | | |   | | +---- tile0 enable<br>| | | |   | +------ bg enable<br>| | | |   +-------- fg enable<br>| | | +------------ window enable<br>| | +-------------- unused<br>| +---------------- unused<br>+------------------ unused</pre>
+<h3>winctrl</h3>
+<p>When the window is active the <code>winctrl</code> port specifies which layers (assuming they're enabled in <code>dispctrl</code>) will be shown both inside (low nibble) and outside (high nibble) the window bounds. The bounds default from (0, 0) to (1024, 1024), and can be set using the <code>position</code> port.</p>
+<pre>
+F B 1 0   F B 1 0<br>| | | |   | | | +-- tile1 inside<br>| | | |   | | +---- tile0 inside<br>| | | |   | +------ bg inside<br>| | | |   +-------- fg inside<br>| | | +------------ tile0 outside<br>| | +-------------- tile1 outside<br>| +---------------- bg outside<br>+------------------ fg outside</pre>
+<h3>mapconfig</h3>
+<p>The <code>mapconfig</code> port is used to configure the map settings for each tile layer.</p>
+<pre>
+H H W W   A C R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set map addr<br>| | | |   | +------ enable crop [planned]<br>| | | |   +-------- enable attribute map [planned]<br>| | +-+------------ map width (16, 32, 64, 128 tiles)<br>+-+---------------- map height (16, 32, 64, 128 tiles)</pre>
+<h3>tileconfig</h3>
+<p>The <code>tileconfig</code> port is used to configure the tiles for each tile layer.</p>
+<pre>
+B B B B   ? D R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set tiles addr<br>| | | |   | +------ select tile depth (1bpp/2bpp)<br>| | | |   +-------- Unused<br>+-+-+-+------------ blend mode</pre>
+<h3>position</h3>
+<p>The <code>position</code> port is used to transfer the screen x/y values to the tile layer scroll registers and the window edge registers. The value set indicates which scroll registers should be set, with multiple sets being settable at once if the x/y coordinates are the same.</p>
+<pre>
+R L B T   Y1 X1 Y0 X0<br>| | | |    |  |  |  +-- tile0 scroll x<br>| | | |    |  |  +----- tile0 scroll y<br>| | | |    |  +-------- tile1 scroll x<br>| | | |    +----------- tile1 scroll y<br>| | | +---------------- window top edge<br>| | +------------------ window bottom edge<br>| +-------------------- window left edge<br>+---------------------- window right edge</pre>
+<h3>Blit [planned]</h3>
+<p>A blitter may be added if I can settle on a style I'm comfortable with.</p>
+<h3>Polygon [planned]</h3>
+<p>Heavily inspired by the <a href='https://blazebone.com/pochi/devices.html#poly' target='_blank'>Pochi poly port</a>, the polygon port draws a filled or hollow polygon. A hollow polygon may also be unclosed.</p>
+<p>To draw a polygon, set <code>addr</code> to point to an address which specifies the number of corners in the polygon, followed by that many shorts defining the corner coordinates, with the first byte containing the X coordinate, and the second byte containing the Y coordinate. All coordinates are relative to (0,0) at the top left corner of the display.</p>
+<p>Note: The details of the byte written to <code>polygon</code> are TBD.</p>
+<h3>Fill [planned]</h3>
+<p>The fill port can be used to quickly and easily fill some or all of the fg/bg layers. The fill can be applied to either layer, be applied to the window in/out regions, use any color (or transparent), and fill using one of four settings.</p>
+<pre>
+F F C C   T O I L<br>| | | |   | | | +-- layer select (0=fg, 1=bg)<br>| | | |   | | +---- fill inside window<br>| | | |   | +------ fill outside window<br>| | | |   +-------- transparent fill<br>| | +-+------------ fill color (if not transparent)<br>+-+---------------- fill type (0=solid, 1=random 25%, 2=random 50%, 3=1bpp tile from addr port)</pre>
+</main>
+<footer>
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Thu Mar 23 20:58:17 2023
+</em>
+<hr />
+<section>
+<a href='https://creativecommons.org/licenses/by-nc-sa/4.0'><img src='media/icon/cc.svg' /></a>
+<p>Dave VanEe &copy; 2022 <a href='license.html'>CC-BY-NC-SA 4.0</a></p>
+</section>
+</footer>
+</body>
+</html>

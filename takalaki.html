@@ -24,119 +24,32 @@
 <li><a href='albums.html'>albums</a></li>
 </ul>
 <ul>
-<li><a href='simple_gb_asm_examples.html'>simple gb asm examples</a></li>
+<li><a href='simple_gb_asm.html'>simple gb asm</a></li>
 <li><b><a href='takalaki.html'>takalaki/</a></b></li>
 </ul>
 <ul>
+<li><a href='history.html'>history</a></li>
+<li><a href='raster_device.html'>raster device</a></li>
 </ul>
 </nav>
 <main>
 <h1>Takalaki - A personal virtual machine using the Uxn CPU</h1>
 <h2>Status</h2>
 <p>An initial implementation of a single scrollable tile layer along with the scanline vector can be found here in the <a href='https://codeberg.org/tbsp/takalaki' target='_blank'>Takalaki Codeberg repo</a>.</p>
-<h2>History</h2>
-<p>Varvara, the first graphical system built around the Uxn CPU strikes a fantastic balanace of simplicity and power in an incredibly lightweight implementation, allowing for some incredibly powerful tools to be created in very little space.</p>
-<p>I've found writing uxntal (the Uxn assembly language) to be a wonderful experience, but my years of working with tile based systems like the Game Boy have left me itching for a more familiar display device. In late 2022 I spent a bunch of time thinking about an alternate display device for Varvara based around tiles and tilemaps, allowing for easy scrolling and even raster effects. At the time my focus was ease of implementation of a VM hosted by the Game Boy (or possibly the NES/SMS/GG).</p>
-<p>After a while I came to terms with the fact that uxntal on GB would likely never be particularly fast, even if I made the display as close to native as possible, and I'd probably resort to writing native GB assembly once I hit that point. After some time away I was reminded of Devine Lu Linvega's hopes that Uxn would inspire people to create their own personal computing platform, and Takalaki was born.</p>
-<p>The initial Takalaki design had a collapsed device port layout, a controller with 3 action buttons (instead of 2), simplified audio devices, and an expanded display device limited to a maximum resolution of 256x256. After a while working on refining the design and starting on the implementation I decided to abandon most of the refinements I'd come up with, and retool Takalaki as a fully backwards compatible Varvara clone with an extended screen device.</p>
 <h2>Overview</h2>
-<p>Takalaki is a Varvara clone with an extended screen device with the goal of streamlining development of tile-based games. It's fully backwards compatible with Varvara, with the screen extensions residing in the <code>0xe0</code> device range.</p>
-<p>The two existing bitmap layers (fg and bg) can be used alongside two new tile layers, and can be stacked in any order. The new blitter and polygon operations draw to the fg/bg layers. In addition there will be a window feature to control which of the aforementioned layers will be visible in different regions of the screen. Along with all this is a new vector, which is evaluated before rendering every scanline, allowing for a variety of raster effects.</p>
+<p>Takalaki is a Varvara clone with an additional raster device which builds upon the screen device, with the goal of streamlining development of tile-based games. It's fully backwards compatible with Varvara, with the raster device residing in the <code>0xe0</code> device range.</p>
+<p>The two existing bitmap layers (fg and bg) are rendered above the two new tile layers. All four layers can be toggled independently, as well as have their visibility controlled using a window with adjustable edges. Along with all this is a new vector, which is evaluated before rendering every scanline, allowing for a variety of raster effects.</p>
 <p>This combination ends up giving something more powerful than a GBA in some ways (simultaneous tiled/bitmap layers), but less powerful in others (only a single four-color palette).</p>
-<p>Both the tile layers can either wrap or crop at the tilemap edges, and can use Varvara-style blend modes. Each tile layer can be set to have a map with width and height of 16, 32, 64, or 128, and pulls from up to 256 tiles. Each tile layer can optionally be provided with a map of attribute data, allowing per-tile flips, priority, and blending.</p>
-<p>The window is a rectangular region defined by left/right/top/bottom values. The <code>winctrl</code> port specifies which of the aforementioned layers (tile0, tile1, fg, bg) will be drawn either inside or outside the window (when enabled). By making use of the scanline vector complex window shapes can be created.</p>
+<p>Both the tile layers can either wrap or crop [planned] at the tilemap edges, and can use Varvara-style blend modes. Each tile layer can be set to have a map with width and height of 16, 32, 64, or 128, and pulls from up to 256 tiles. Each tile layer can optionally be provided with a map of attribute data, allowing per-tile flips, priority, and blending [planned].</p>
+<p>The window is a rectangular region defined by left/right/top/bottom values. The <code>winctrl</code> port specifies which of the aforementioned layers (tile0, tile1, fg, bg) will be drawn either inside or outside the window (when enabled). By making use of the raster vector complex window shapes can be created.</p>
 <p>My hope is to first implement the screen extensions based on the reference uxnemu emulator, and later develop my own original emulator with extended debugging tools.</p>
-<h3>Device Ports</h3>
-<table>
-<tr>
-<td><b>port</b></td>
-<td><b>register</b></td>
-<td><b>use</b></td>
-</tr>
-<tr>
-<td>??</td>
-<td>vector*</td>
-<td>scanline vector</td>
-</tr>
-<tr>
-<td>??</td>
-<td>dispctrl</td>
-<td>control visible layers</td>
-</tr>
-<tr>
-<td>??</td>
-<td>winctrl</td>
-<td>control layers inside/outside window bounds</td>
-</tr>
-<tr>
-<td>??</td>
-<td>priority</td>
-<td>set stacking order of the layers</td>
-</tr>
-<tr>
-<td>??</td>
-<td>position</td>
-<td>set tile layer scrolls and window bounds</td>
-</tr>
-<tr>
-<td>??</td>
-<td>mapconfig</td>
-<td>configure the tile layer maps</td>
-</tr>
-<tr>
-<td>??</td>
-<td>tileconfig</td>
-<td>configure the tile layers</td>
-</tr>
-<tr>
-<td>??</td>
-<td>blit</td>
-<td>operation to blit to the bitmap layer</td>
-</tr>
-<tr>
-<td>??</td>
-<td>polygon</td>
-<td>operation to draw a polygon to the bitmap layer</td>
-</tr>
-<tr>
-<td>??</td>
-<td>clear</td>
-<td>operation to clear the bitmap layer to a given color</td>
-</tr>
-<tr>
-<td>??</td>
-<td>scanline*</td>
-<td>current scanline during scanline vector</td>
-</tr>
-</table>
-<h3>dispctrl</h3>
-<pre>
-? ? ? W   B S 1 0<br>    | |   | | | +-- tile0 enable<br>    | |   | | +---- tile1 enable<br>    | |   | +------ fg enable<br>    | |   +-------- bg enable<br>    | +------------ window enable<br>    +-------------- ???</pre>
-<h3>priority</h3>
-<p>Each of the four layers has a priority value from 0-3. Higher priority layers are drawn in front, with lower priority layers drawn behind. By default, the tile0 layer has a priority of 0, the bg layer has a priority of 1, the fg layer has a priority of 2, and the tile1 layer has a priority of 3.</p>
-<pre>
-B B F F   1 1 0 0<br>| | | |   | | +-+-- tile0 priority<br>| | | |   +-+------ tile1 priority<br>| | +-+------------ fg priority<br>+-+---------------- bg priority</pre>
-<h3>mapconfig</h3>
-<p>The <code>mapconfig</code> port is used to configure the map settings for each tile layer.</p>
-<pre>
-H H W W   A C R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set map addr<br>| | | |   | +------ enable crop<br>| | | |   +-------- enable attribute map<br>| | +-+------------ map width (16, 32, 64, 128 tiles)<br>+-+---------------- map height (16, 32, 64, 128 tiles)</pre>
-<h3>tileconfig</h3>
-<p>The <code>tileconfig</code> port is used to configure the tiles for each tile layer.</p>
-<pre>
-B B B B   ? D R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set tiles addr<br>| | | |   | +------ select tile depth (1bpp/2bpp)<br>| | | |   +-------- Unused<br>+-+-+-+------------ blend mode</pre>
-<h3>position</h3>
-<p>The <code>position</code> port is used to transfer the screen x/y values to the tile layer scroll registers and the window edge registers. The value set indicates which scroll registers should be set, with multiple sets being settable at once if the x/y coordinates are the same.</p>
-<pre>
-T B L R   Y1 X1 Y0 X0<br>| | | |    |  |  |  +-- tile0 scroll x<br>| | | |    |  |  +----- tile0 scroll y<br>| | | |    |  +-------- tile1 scroll x<br>| | | |    +----------- tile1 scroll y<br>| | | +---------------- window right edge<br>| | +------------------ window left edge<br>| +-------------------- window bottom edge<br>+---------------------- window top edge</pre>
-<h3>Blit</h3>
-<p>A blitter may be added if I can settle on a style I'm comfortable with.</p>
-<h3>Polygon</h3>
-<p>Heavily inspired by the <a href='https://blazebone.com/pochi/devices.html#poly' target='_blank'>Pochi poly port</a>, the polygon port draws a filled or hollow polygon. A hollow polygon may also be unclosed.</p>
-<p>To draw a polygon, set <code>addr</code> to point to an address which specifies the number of corners in the polygon, followed by that many shorts defining the corner coordinates, with the first byte containing the X coordinate, and the second byte containing the Y coordinate. All coordinates are relative to (0,0) at the top left corner of the display.</p>
-<p>Note: The details of the byte written to <code>polygon</code> are TBD.</p>
+<h2><a href='history.html'>history</a></h2>
+<sub>History of the Takalaki virtual machine</sub>
+<h2><a href='raster_device.html'>raster device</a></h2>
+<sub>A Uxn raster device that builds on top of the Varvara screen device</sub>
 </main>
 <footer>
-<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Sun Mar 19 22:08:37 2023
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Thu Mar 23 20:58:17 2023
 </em>
 <hr />
 <section>

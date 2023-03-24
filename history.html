@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta name='description' content='History of the Takalaki virtual machine' />
+<meta name='author' content='Dave VanEe' />
+<meta name='viewport' content='width=device-width, initial-scale=1' />
+<link rel='shortcut icon' type='image/png' href='media/icon/wastingmoves_favicon.png' />
+<link rel='stylesheet' type='text/css' href='links/main.css' />
+<title>wastingmoves: history</title>
+<meta property='og:title' content='history' />
+<meta property='og:type' content='website' />
+<meta property='og:description' content='History of the Takalaki virtual machine' />
+<meta property='og:site_name' content='wastingmoves' />
+<meta property='og:url' content='https://wastingmoves.com/history.html' />
+<meta property='og:image' content='https://wastingmoves.com/media/headers/history-240.png' />
+</head>
+<body>
+<nav>
+<a href='index.html'><img src='media/icon/wastingmoves.svg' alt='wastingmoves' height='100px' width='100px' /></a>
+<ul>
+<li><a href='simple_gb_asm.html'>simple gb asm</a></li>
+<li><b><a href='takalaki.html'>takalaki/</a></b></li>
+</ul>
+<ul>
+<li><b><a href='history.html'>history/</a></b></li>
+<li><a href='raster_device.html'>raster device</a></li>
+</ul>
+<ul>
+</ul>
+</nav>
+<main>
+<h1>History of the Takalaki virtual machine</h1>
+<h2>Takalaki History</h2>
+<p>Varvara, the first graphical system built around the Uxn CPU strikes a fantastic balanace of simplicity and power in an incredibly lightweight implementation, allowing for some surprisingly powerful tools to be created in very little space.</p>
+<p>I've found writing uxntal (the Uxn assembly language) to be a wonderful experience, but my years of working with tile based systems like the Game Boy have left me itching for a more familiar display device. In late 2022 I spent a bunch of time thinking about an alternate display device for Varvara based around tiles and tilemaps, allowing for easy scrolling and even raster effects. At the time my focus was ease of implementation of a VM hosted by the Game Boy (or possibly the NES/SMS/GG).</p>
+<p>After a while I came to terms with the fact that uxntal on GB would likely never be particularly fast, even if I made the display as close to native as possible, and I'd probably resort to writing native GB assembly once I hit the performance ceiling. After some time away I was reminded of Devine Lu Linvega's hopes that Uxn would inspire people to create their own personal computing platform, and Takalaki was born.</p>
+<p>The initial Takalaki design had a collapsed device port layout, a controller with 3 action buttons (instead of 2), simplified audio devices, and an expanded display device limited to a maximum resolution of 256x256.</p>
+<p>After a while working on refining the design and starting on the implementation I decided to abandon most of the refinements I'd come up with, and retool Takalaki as a fully backwards compatible Varvara clone with an extended screen device. This felt like it would allow me to stay close enough to the evolving Uxn ecosystem while still exploring the tile-based space as desired.</p>
+</main>
+<footer>
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Thu Mar 23 20:58:17 2023
+</em>
+<hr />
+<section>
+<a href='https://creativecommons.org/licenses/by-nc-sa/4.0'><img src='media/icon/cc.svg' /></a>
+<p>Dave VanEe &copy; 2022 <a href='license.html'>CC-BY-NC-SA 4.0</a></p>
+</section>
+</footer>
+</body>
+</html>
