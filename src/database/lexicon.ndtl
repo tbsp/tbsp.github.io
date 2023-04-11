@@ -304,7 +304,7 @@ TAKALAKI
 	BREF : Takalaki - A personal virtual machine using the Uxn CPU
 	BODY
 		## Status
-		An initial implementation of a single scrollable tile layer along with the scanline vector can be found here in the {https://codeberg.org/tbsp/takalaki Takalaki Codeberg repo}.
+		An initial implementation of two scrollable tile layers, a window, and a raster vector can be found in the {https://codeberg.org/tbsp/takalaki Takalaki Codeberg repo}. The raster.tal example gives a very simple example of use.
 
 		## Overview
 		Takalaki is a Varvara clone with an additional raster device which builds upon the screen device, with the goal of streamlining development of tile-based games. It's fully backwards compatible with Varvara, with the raster device residing in the `0xe0` device range.
@@ -329,7 +329,9 @@ RASTER DEVICE
 	HOST : takalaki
 	BREF : A Uxn raster device that builds on top of the Varvara screen device
 	BODY
-		### Raster Device Ports
+		## Disclaimer
+		This device is very much in flux, and will change as I tinker with it. Assume it will change, possible dramatically.
+		## Raster Device Ports
 		| *port*| *register*| *use*|
 		| 00| vector*| raster vector|
 		| 02| dispctrl| control visible layers|
@@ -344,17 +346,17 @@ RASTER DEVICE
 		### vector
 		The raster vector is evaluated at the start of every scanline if the address is set. The scanline port can be read to determine the current scanline inside the raster vector handler. During the raster vector any changes to dispctrl, winctrl, position, mapconfig, tileconfig, or the system palette will take effect from that scanline forward.
 		### dispctrl
-		Controls which layers are visible. Layers front-to-back in the order: fg > bg > tile0 > tile1.
-		> x x x W   F B 1 0<br>| | | |   | | | +-- tile1 enable<br>| | | |   | | +---- tile0 enable<br>| | | |   | +------ bg enable<br>| | | |   +-------- fg enable<br>| | | +------------ window enable<br>| | +-------------- unused<br>| +---------------- unused<br>+------------------ unused
+		Controls which layers are visible. By default layers are drawn front-to-back in the order: fg > tile1 > bg > tile0. The drawing order can be adjusted by setting the tile priority bit (see `tileconfig`). By default only the fg and bg layers are enabled, for Varvara backwards compatibility. Note that when only fg/bg layers are enabled the first color of the fg layer is transparent to maintain compatibility with Varvara software.
+		> x x x W   F B 1 0<br>| | | |   | | | +-- tile0 enable<br>| | | |   | | +---- tile1 enable<br>| | | |   | +------ bg enable<br>| | | |   +-------- fg enable<br>| | | +------------ window enable<br>| | +-------------- unused<br>| +---------------- unused<br>+------------------ unused
 		### winctrl
 		When the window is active the `winctrl` port specifies which layers (assuming they're enabled in `dispctrl`) will be shown both inside (low nibble) and outside (high nibble) the window bounds. The bounds default from (0, 0) to (1024, 1024), and can be set using the `position` port.
-		> F B 1 0   F B 1 0<br>| | | |   | | | +-- tile1 inside<br>| | | |   | | +---- tile0 inside<br>| | | |   | +------ bg inside<br>| | | |   +-------- fg inside<br>| | | +------------ tile0 outside<br>| | +-------------- tile1 outside<br>| +---------------- bg outside<br>+------------------ fg outside
+		> F B 1 0   F B 1 0<br>| | | |   | | | +-- tile0 inside<br>| | | |   | | +---- tile1 inside<br>| | | |   | +------ bg inside<br>| | | |   +-------- fg inside<br>| | | +------------ tile0 outside<br>| | +-------------- tile1 outside<br>| +---------------- bg outside<br>+------------------ fg outside
 		### mapconfig
 		The `mapconfig` port is used to configure the map settings for each tile layer.
 		> H H W W   A C R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set map addr<br>| | | |   | +------ enable crop [planned]<br>| | | |   +-------- enable attribute map [planned]<br>| | +-+------------ map width (16, 32, 64, 128 tiles)<br>+-+---------------- map height (16, 32, 64, 128 tiles)
 		### tileconfig
-		The `tileconfig` port is used to configure the tiles for each tile layer.
-		> B B B B   ? D R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set tiles addr<br>| | | |   | +------ select tile depth (1bpp/2bpp)<br>| | | |   +-------- Unused<br>+-+-+-+------------ blend mode
+		The `tileconfig` port is used to configure the tiles for each tile layer. If the priority bit is set, the tile layer will be drawn infront of it's neighbouring bitmap layer. That is, tile0 with priority will be drawn infront of bg, and tile1 with priority will be drawn infront of fg.
+		> B B B B   ? D R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set tiles addr<br>| | | |   | +------ select tile depth (1bpp/2bpp)<br>| | | |   +-------- priority<br>+-+-+-+------------ blend mode
 		### position
 		The `position` port is used to transfer the screen x/y values to the tile layer scroll registers and the window edge registers. The value set indicates which scroll registers should be set, with multiple sets being settable at once if the x/y coordinates are the same.
 		> R L B T   Y1 X1 Y0 X0<br>| | | |    |  |  |  +-- tile0 scroll x<br>| | | |    |  |  +----- tile0 scroll y<br>| | | |    |  +-------- tile1 scroll x<br>| | | |    +----------- tile1 scroll y<br>| | | +---------------- window top edge<br>| | +------------------ window bottom edge<br>| +-------------------- window left edge<br>+---------------------- window right edge

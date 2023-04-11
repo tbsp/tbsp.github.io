@@ -35,7 +35,7 @@
 <main>
 <h1>Takalaki - A personal virtual machine using the Uxn CPU</h1>
 <h2>Status</h2>
-<p>An initial implementation of a single scrollable tile layer along with the scanline vector can be found here in the <a href='https://codeberg.org/tbsp/takalaki' target='_blank'>Takalaki Codeberg repo</a>.</p>
+<p>An initial implementation of two scrollable tile layers, a window, and a raster vector can be found in the <a href='https://codeberg.org/tbsp/takalaki' target='_blank'>Takalaki Codeberg repo</a>. The raster.tal example gives a very simple example of use.</p>
 <h2>Overview</h2>
 <p>Takalaki is a Varvara clone with an additional raster device which builds upon the screen device, with the goal of streamlining development of tile-based games. It's fully backwards compatible with Varvara, with the raster device residing in the <code>0xe0</code> device range.</p>
 <p>The two existing bitmap layers (fg and bg) are rendered above the two new tile layers. All four layers can be toggled independently, as well as have their visibility controlled using a window with adjustable edges. Along with all this is a new vector, which is evaluated before rendering every scanline, allowing for a variety of raster effects.</p>
@@ -49,7 +49,7 @@
 <sub>A Uxn raster device that builds on top of the Varvara screen device</sub>
 </main>
 <footer>
-<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Thu Mar 23 21:23:42 2023
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Tue Apr 11 12:09:59 2023
 </em>
 <hr />
 <section>
