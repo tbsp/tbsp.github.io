@@ -81,11 +81,6 @@
 <td>operation to draw a polygon to the bitmap layer [planned]</td>
 </tr>
 <tr>
-<td>09</td>
-<td>fill</td>
-<td>operation to fill the bitmap layers [planned]</td>
-</tr>
-<tr>
 <td>0e</td>
 <td>scanline*</td>
 <td>current scanline during raster vector</td>
@@ -108,7 +103,7 @@ H H W W   A C R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---
 <h3>tileconfig</h3>
 <p>The <code>tileconfig</code> port is used to configure the tiles for each tile layer. If the priority bit is set, the tile layer will be drawn infront of it's neighbouring bitmap layer. That is, tile0 with priority will be drawn infront of bg, and tile1 with priority will be drawn infront of fg.</p>
 <pre>
-B B B B   ? D R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set tiles addr<br>| | | |   | +------ select tile depth (1bpp/2bpp)<br>| | | |   +-------- priority<br>+-+-+-+------------ blend mode</pre>
+B B B B   P D R T<br>| | | |   | | | +-- tile layer select<br>| | | |   | | +---- set tiles addr<br>| | | |   | +------ select tile depth (1bpp/2bpp)<br>| | | |   +-------- priority<br>+-+-+-+------------ blend mode</pre>
 <h3>position</h3>
 <p>The <code>position</code> port is used to transfer the screen x/y values to the tile layer scroll registers and the window edge registers. The value set indicates which scroll registers should be set, with multiple sets being settable at once if the x/y coordinates are the same.</p>
 <pre>
@@ -119,13 +114,9 @@ R L B T   Y1 X1 Y0 X0<br>| | | |    |  |  |  +-- tile0 scroll x<br>| | | |    | 
 <p>Heavily inspired by the <a href='https://blazebone.com/pochi/devices.html#poly' target='_blank'>Pochi poly port</a>, the polygon port draws a filled or hollow polygon. A hollow polygon may also be unclosed.</p>
 <p>To draw a polygon, set <code>addr</code> to point to an address which specifies the number of corners in the polygon, followed by that many shorts defining the corner coordinates, with the first byte containing the X coordinate, and the second byte containing the Y coordinate. All coordinates are relative to (0,0) at the top left corner of the display.</p>
 <p>Note: The details of the byte written to <code>polygon</code> are TBD.</p>
-<h3>Fill [planned]</h3>
-<p>The fill port can be used to quickly and easily fill some or all of the fg/bg layers. The fill can be applied to either layer, be applied to the window in/out regions, use any color (or transparent), and fill using one of four settings.</p>
-<pre>
-F F C C   T O I L<br>| | | |   | | | +-- layer select (0=fg, 1=bg)<br>| | | |   | | +---- fill inside window<br>| | | |   | +------ fill outside window<br>| | | |   +-------- transparent fill<br>| | +-+------------ fill color (if not transparent)<br>+-+---------------- fill type (0=solid, 1=random 25%, 2=random 50%, 3=1bpp tile from addr port)</pre>
 </main>
 <footer>
-<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Tue Apr 11 12:09:59 2023
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Sun Apr 16 20:51:19 2023
 </em>
 <hr />
 <section>
