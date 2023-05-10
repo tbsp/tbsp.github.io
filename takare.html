@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta name='description' content='A low-spec tile-based VM based on the Uxn CPU' />
+<meta name='author' content='Dave VanEe' />
+<meta name='viewport' content='width=device-width, initial-scale=1' />
+<link rel='shortcut icon' type='image/png' href='media/icon/wastingmoves_favicon.png' />
+<link rel='stylesheet' type='text/css' href='links/main.css' />
+<title>wastingmoves: takare</title>
+<meta property='og:title' content='takare' />
+<meta property='og:type' content='website' />
+<meta property='og:description' content='A low-spec tile-based VM based on the Uxn CPU' />
+<meta property='og:site_name' content='wastingmoves' />
+<meta property='og:url' content='https://wastingmoves.com/takare.html' />
+<meta property='og:image' content='https://wastingmoves.com/media/headers/takare-240.png' />
+</head>
+<body>
+<nav>
+<a href='index.html'><img src='media/icon/wastingmoves.svg' alt='wastingmoves' height='100px' width='100px' /></a>
+<ul>
+<li><a href='interactive.html'>interactive</a></li>
+<li><b><a href='development.html'>development/</a></b></li>
+<li><a href='albums.html'>albums</a></li>
+</ul>
+<ul>
+<li><a href='simple_gb_asm.html'>simple gb asm</a></li>
+<li><a href='takalaki.html'>takalaki</a></li>
+<li><b><a href='takare.html'>takare/</a></b></li>
+</ul>
+<ul>
+</ul>
+</nav>
+<main>
+<h1>A low-spec tile-based VM based on the Uxn CPU</h1>
+<h1>Overview</h1>
+<p>While the Varvara VM provides an excellent basis for high-resolution tools and games, the fairly restrained specifications are too ambitious for some older systems to support fully. To address this, Takare defines an even more limited specification focused on tile-based systems with hardware sprite support and simple tone/noise audio hardware.</p>
+<p>In addition, the target host systems often have in the range of 2-8KB of RAM, meaning the Uxn addressable memory is quite limited. To deal with this, the tile/tilemap copy routines and music driver are able to access data directly from ROM, leaving the Uxn addressable memory available for code and working data.</p>
+<h1>Uxn System</h1>
+<p>While the Uxn CPU can address 64KB of RAM, Takare hosts may limit that to a much smaller range (as little as 1.5KB). The working and return stacks are reduced to only 32 bytes each, and the device ports are condensed into 64 bytes (as opposed to the 16 ports per device in Varvara).</p>
+<h1>Display</h1>
+<p>The display is limited to 256x256 pixels. Two sets of 256 8x8 tiles (2bpp) are available. On some systems the tiles are fixed (NES CHR ROM), while others support dynamic tile loading from ROM (Game Boy). A single scrollable tile background layer is available, using a 32x32 tilemap and the first set of tiles. A number of 8x8 sprites are available (40-64, depending on the host), with per-line limits depending on the host (8-10).</p>
+<h1>Controller</h1>
+<p>The controller is identical to Varvara, containing a 4-direction dpad, start/select, and A/B buttons.</p>
+<h1>Sound</h1>
+<p>There are two tone channels, and a noise channel. A simple music driver is included in the VM host, allowing playback from music data stored in ROM.</p>
+</main>
+<footer>
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Tue May  9 21:51:22 2023
+</em>
+<hr />
+<section>
+<a href='https://creativecommons.org/licenses/by-nc-sa/4.0'><img src='media/icon/cc.svg' /></a>
+<p>Dave VanEe &copy; 2022 <a href='license.html'>CC-BY-NC-SA 4.0</a></p>
+</section>
+</footer>
+</body>
+</html>

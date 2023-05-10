@@ -366,6 +366,22 @@ RASTER DEVICE
 		To draw a polygon, set `addr` to point to an address which specifies the number of corners in the polygon, followed by that many shorts defining the corner coordinates, with the first byte containing the X coordinate, and the second byte containing the Y coordinate. All coordinates are relative to (0,0) at the top left corner of the display.
 		Note: The details of the byte written to `polygon` are TBD.
 
+TAKARE
+	HOST : development
+	BREF : A low-spec tile-based VM based on the Uxn CPU
+	BODY
+		# Overview
+		While the Varvara VM provides an excellent basis for high-resolution tools and games, the fairly restrained specifications are too ambitious for some older systems to support fully. To address this, Takare defines an even more limited specification focused on tile-based systems with hardware sprite support and simple tone/noise audio hardware.
+		In addition, the target host systems often have in the range of 2-8KB of RAM, meaning the Uxn addressable memory is quite limited. To deal with this, the tile/tilemap copy routines and music driver are able to access data directly from ROM, leaving the Uxn addressable memory available for code and working data.
+		# Uxn System
+		While the Uxn CPU can address 64KB of RAM, Takare hosts may limit that to a much smaller range (as little as 1.5KB). The working and return stacks are reduced to only 32 bytes each, and the device ports are condensed into 64 bytes (as opposed to the 16 ports per device in Varvara).
+		# Display
+		The display is limited to 256x256 pixels. Two sets of 256 8x8 tiles (2bpp) are available. On some systems the tiles are fixed (NES CHR ROM), while others support dynamic tile loading from ROM (Game Boy). A single scrollable tile background layer is available, using a 32x32 tilemap and the first set of tiles. A number of 8x8 sprites are available (40-64, depending on the host), with per-line limits depending on the host (8-10).
+		# Controller
+		The controller is identical to Varvara, containing a 4-direction dpad, start/select, and A/B buttons.
+		# Sound
+		There are two tone channels, and a noise channel. A simple music driver is included in the VM host, allowing playback from music data stored in ROM.
+
 META
 	HOST : about
 	BREF : About this website.
