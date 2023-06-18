@@ -18,17 +18,12 @@ INTERACTIVE
 	HOST : projects
 	CAPT : 
 	TYPE : img_portal
-	BREF : A smattering of interactive things I've made.
+	BREF : Things to play or play with.
 
 DEVELOPMENT
 	HOST : projects
 	TYPE : img_portal
-	BREF : Focused tinkering.
-
-ALBUMS
-	HOST : projects
-	TYPE : img_portal
-	BREF : A collection of photo albums.
+	BREF : Tools and whatnot.
 
 DIRECTORY
 	HOST : index
@@ -46,7 +41,7 @@ ABOUT
 	BREF : What is all this?
 	TYPE : img_portal
 	BODY
-		This {meta website} is my digital garden and personal assistant. It is an ever growing, changing, living document that functions as a repository for {projects}, a personal database for {knowledge knowledge} and {albums memories}.
+		This {meta website} is my digital garden and personal assistant. It is an ever growing, changing, living document that functions as a repository for {projects} and a personal database for {knowledge knowledge}.
 
 SIMPLE GB ASM
 	HOST : development
@@ -243,7 +238,7 @@ FRUIT PURSUIT
 		itch : https://tbsp.itch.io/fruit-pursuit
 
 UXNGB
-	HOST : interactive
+	HOST : development
 	BREF : A Uxn emulator for Game Boy
 	BODY
 		### Motivation
@@ -266,7 +261,7 @@ UXNGB
 		uxn : https://wiki.xxiivv.com/site/uxn.html
 
 VARABOY
-	HOST : interactive
+	HOST : development
 	BREF : A Game Boy emulator for Uxn/Varvara
 	BODY
 		## Background 
@@ -381,6 +376,8 @@ TAKARE
 		The controller is identical to Varvara, containing a 4-direction dpad, start/select, and A/B buttons.
 		# Sound
 		There are two tone channels, and a noise channel. A simple music driver is included in the VM host, allowing playback from music data stored in ROM.
+		# Implementations
+		An {https://codeberg.org/tbsp/takare-nes early NES implementation} has been created, which only supports basic sprites, and is limited to only 1024 bytes of Uxn RAM (plus the zero page). An alternate "tile" display device for {https://github.com/tbsp/uxngb/tree/master/src/emu_tile uxngb} has also been created in a similar style. It supports some of the background tilemap writing, as well as dynamic tile data.
 
 META
 	HOST : about
@@ -570,9 +567,9 @@ WATCHING
 	HOST : directory
 	BREF : The Cinema.
 	BODY
+		{^list watchlist 2023}
 		{^list watchlist 2022}
 		{^list watchlist 2021}
-		{^list watchlist}
 
 PLAYING
 	HOST : directory

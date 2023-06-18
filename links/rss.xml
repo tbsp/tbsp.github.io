@@ -4,12 +4,23 @@
 <title>wastingmoves</title>
 <link>https://wastingmoves.com/journal.html</link>
 <description>Updates and progress on various projects and day to day events.</description>
-<lastBuildDate>Tue, 09 May 2023 00:00:00 +0100</lastBuildDate>
+<lastBuildDate>Sat, 17 Jun 2023 00:00:00 +0100</lastBuildDate>
 <image>
   <url>https://wastingmoves.com/media/icon/rss.png</url>
   <title>Updates and progress on various projects and day to day events.</title>
   <link>https://wastingmoves.com//journal.html</link>
 </image>
+<item>
+  <title>Takare on NES (and the end of Pern books)</title>
+  <link>https://wastingmoves.com/takare.html</link>
+  <guid isPermaLink='false'>journal/230617</guid>
+  <pubDate>Sat, 17 Jun 2023 00:00:00 +0100</pubDate>
+  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <description>
+<![CDATA[<figure><a href='https://wastingmoves.com/media/journal/230617.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/230617-680.png'/></a><figcaption>230617: Takare on NES (and the end of Pern books)</figcaption></figure>
+<p>Filed under <i>development/<a href='https://wastingmoves.com/takare.html'>takare</a>: A low-spec tile-based VM based on the Uxn CPU</i></p>]]>
+  </description>
+</item>
 <item>
   <title>Early work on Takalaki (and lots of Pern books)</title>
   <link>https://wastingmoves.com/takalaki.html</link>
@@ -29,7 +40,7 @@
   <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/221210.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/221210-680.png'/></a><figcaption>221210: Initial release of Varaboy</figcaption></figure>
-<p>Filed under <i>interactive/<a href='https://wastingmoves.com/varaboy.html'>varaboy</a>: A Game Boy emulator for Uxn/Varvara</i></p>]]>
+<p>Filed under <i>development/<a href='https://wastingmoves.com/varaboy.html'>varaboy</a>: A Game Boy emulator for Uxn/Varvara</i></p>]]>
   </description>
 </item>
 <item>
@@ -55,13 +66,12 @@
 </item>
 <item>
   <title>Went to a wedding at the end of the world</title>
-  <link>https://wastingmoves.com/albums.html</link>
   <guid isPermaLink='false'>journal/221010</guid>
   <pubDate>Mon, 10 Oct 2022 00:00:00 +0100</pubDate>
   <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/221010.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/221010-680.png'/></a><figcaption>221010: Went to a wedding at the end of the world</figcaption></figure>
-<p>Filed under <i>projects/<a href='https://wastingmoves.com/albums.html'>albums</a>: A collection of photo albums.</i></p>]]>
+]]>
   </description>
 </item>
 <item>
@@ -103,7 +113,7 @@
   <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/220629.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/220629-680.png'/></a><figcaption>220629: Initial release of uxngb</figcaption></figure>
-<p>Filed under <i>interactive/<a href='https://wastingmoves.com/uxngb.html'>uxngb</a>: A Uxn emulator for Game Boy</i></p>]]>
+<p>Filed under <i>development/<a href='https://wastingmoves.com/uxngb.html'>uxngb</a>: A Uxn emulator for Game Boy</i></p>]]>
   </description>
 </item>
 </channel></rss>

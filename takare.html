@@ -21,10 +21,11 @@
 <ul>
 <li><a href='interactive.html'>interactive</a></li>
 <li><b><a href='development.html'>development/</a></b></li>
-<li><a href='albums.html'>albums</a></li>
 </ul>
 <ul>
 <li><a href='simple_gb_asm.html'>simple gb asm</a></li>
+<li><a href='uxngb.html'>uxngb</a></li>
+<li><a href='varaboy.html'>varaboy</a></li>
 <li><a href='takalaki.html'>takalaki</a></li>
 <li><b><a href='takare.html'>takare/</a></b></li>
 </ul>
@@ -44,9 +45,11 @@
 <p>The controller is identical to Varvara, containing a 4-direction dpad, start/select, and A/B buttons.</p>
 <h1>Sound</h1>
 <p>There are two tone channels, and a noise channel. A simple music driver is included in the VM host, allowing playback from music data stored in ROM.</p>
+<h1>Implementations</h1>
+<p>An <a href='https://codeberg.org/tbsp/takare-nes' target='_blank'>early NES implementation</a> has been created, which only supports basic sprites, and is limited to only 1024 bytes of Uxn RAM (plus the zero page). An alternate "tile" display device for <a href='https://github.com/tbsp/uxngb/tree/master/src/emu_tile' target='_blank'>uxngb</a> has also been created in a similar style. It supports some of the background tilemap writing, as well as dynamic tile data.</p>
 </main>
 <footer>
-<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Tue May  9 21:51:22 2023
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Sat Jun 17 21:49:56 2023
 </em>
 <hr />
 <section>
