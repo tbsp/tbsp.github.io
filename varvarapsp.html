@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta name='description' content='A Varvara VM for PlayStation Portable' />
+<meta name='author' content='Dave VanEe' />
+<meta name='viewport' content='width=device-width, initial-scale=1' />
+<link rel='shortcut icon' type='image/png' href='media/icon/wastingmoves_favicon.png' />
+<link rel='stylesheet' type='text/css' href='links/main.css' />
+<title>wastingmoves: varvarapsp</title>
+<meta property='og:title' content='varvarapsp' />
+<meta property='og:type' content='website' />
+<meta property='og:description' content='A Varvara VM for PlayStation Portable' />
+<meta property='og:site_name' content='wastingmoves' />
+<meta property='og:url' content='https://wastingmoves.com/varvarapsp.html' />
+<meta property='og:image' content='https://wastingmoves.com/media/headers/varvarapsp-240.png' />
+</head>
+<body>
+<nav>
+<a href='index.html'><img src='media/icon/wastingmoves.svg' alt='wastingmoves' height='100px' width='100px' /></a>
+<ul>
+<li><a href='interactive.html'>interactive</a></li>
+<li><b><a href='development.html'>development/</a></b></li>
+</ul>
+<ul>
+<li><a href='simple_gb_asm.html'>simple gb asm</a></li>
+<li><a href='uxngb.html'>uxngb</a></li>
+<li><b><a href='varvarapsp.html'>varvarapsp/</a></b></li>
+<li><a href='varaboy.html'>varaboy</a></li>
+<li><a href='takalaki.html'>takalaki</a></li>
+<li><a href='takare.html'>takare</a></li>
+</ul>
+<ul>
+</ul>
+</nav>
+<main>
+<h1>A Varvara VM for PlayStation Portable</h1>
+<p>Although the Uxn lines thread included a photo of Varvara running on a PSP (actually a Vita) quite early, there didn't appear to be a maintained implementation for PSP on the Awesome Uxn list.</p>
+<p>Out of curiosity for how well the PSP could run Oquonie (one of the more demanding Varvara ROMs), I took to porting the SDL reference emulator. Getting the basic port running tool very little time, in fact. Sadly the performance wasn't close to sufficient for playing Oquonie.</p>
+<p>Switching the screen, controller, and audio from SDL to native API calls was again not too hard, and provided a nice performance boost.</p>
+<p>The next step, using the "Gu" (think GPU), was quite a bit harder. In the end the code to make things work wasn't very far off the samples which come with the PSPDEV SDK, and I can no longer recall the things I had to tweak, but once everything fell into place I was much closer to my intended goal!</p>
+<p>A few more optimizations in terms of subdivided sprite draws, and using a lookup table based screen_blit from uxnGBA, and Oquonie was within reach of playable.</p>
+<p>Having exhausted ideas up to that point I asked on the PSPDEV discord for ideas and the (now) super obvious suggestion of enabling compiler optimizations was proposed.</p>
+<p>Oops. That's what I get for so much time using assemblers instead of compilers.</p>
+<p><code>-O2 -g0</code> added to the compiler flags and a huge surge in performance later my ultimate goal was reached: Oquonie playable at full speed on PSP! Fourtette could even manage full-speed smooth music during gameplay, which I had never expected.</p>
+<p>Chances are many of the struggles were no longer necessary in the end, but learning some more tricks (and some gotchas of RISC processors) was a fun adventure at the time.</p>
+<p>Last edit: 2023-08-10</p>
+</main>
+<footer>
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Fri Aug 11 09:14:29 2023
+</em>
+<hr />
+<section>
+<a href='https://creativecommons.org/licenses/by-nc-sa/4.0'><img src='media/icon/cc.svg' /></a>
+<p>Dave VanEe &copy; 2022 <a href='license.html'>CC-BY-NC-SA 4.0</a></p>
+</section>
+</footer>
+</body>
+</html>
