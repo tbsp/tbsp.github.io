@@ -35,19 +35,21 @@
 </nav>
 <main>
 <h1>A Varvara VM for PlayStation Portable</h1>
-<p>Although the Uxn lines thread included a photo of Varvara running on a PSP (actually a Vita) quite early, there didn't appear to be a maintained implementation for PSP on the Awesome Uxn list.</p>
-<p>Out of curiosity for how well the PSP could run Oquonie (one of the more demanding Varvara ROMs), I took to porting the SDL reference emulator. Getting the basic port running tool very little time, in fact. Sadly the performance wasn't close to sufficient for playing Oquonie.</p>
+<p>Although the <a href='https://llllllll.co/t/uxn-virtual-computer/46103' target='_blank'>Uxn lines thread</a> included a photo of Varvara running on a PSP (actually a Vita) quite early, there didn't appear to be a maintained implementation for PSP on the Awesome Uxn list.</p>
+<p>Out of curiosity for how well the PSP could run <a href='https://100r.co/site/oquonie.html' target='_blank'>Oquonie</a> (one of the more demanding Varvara ROMs), I took to porting the <a href='https://git.sr.ht/~rabbits/uxn' target='_blank'>SDL reference emulator</a>. Getting the basic port running tool very little time, in fact. Sadly the performance wasn't close to sufficient for playing Oquonie.</p>
 <p>Switching the screen, controller, and audio from SDL to native API calls was again not too hard, and provided a nice performance boost.</p>
-<p>The next step, using the "Gu" (think GPU), was quite a bit harder. In the end the code to make things work wasn't very far off the samples which come with the PSPDEV SDK, and I can no longer recall the things I had to tweak, but once everything fell into place I was much closer to my intended goal!</p>
+<p>The next step, using the "Gu" (think GPU), was quite a bit harder. In the end the code to make things work wasn't very far off the samples which come with the <a href='https://pspdev.github.io/' target='_blank'>PSPDEV SDK</a>, and I can no longer recall the things I had to tweak, but once everything fell into place I was much closer to my intended goal!</p>
 <p>A few more optimizations in terms of subdivided sprite draws, and using a lookup table based screen_blit from uxnGBA, and Oquonie was within reach of playable.</p>
 <p>Having exhausted ideas up to that point I asked on the PSPDEV discord for ideas and the (now) super obvious suggestion of enabling compiler optimizations was proposed.</p>
 <p>Oops. That's what I get for so much time using assemblers instead of compilers.</p>
-<p><code>-O2 -g0</code> added to the compiler flags and a huge surge in performance later my ultimate goal was reached: Oquonie playable at full speed on PSP! Fourtette could even manage full-speed smooth music during gameplay, which I had never expected.</p>
+<p><code>-O2 -g0</code> added to the compiler flags and a huge surge in performance later my ultimate goal was reached: Oquonie playable at full speed on PSP! <a href='https://github.com/nf/fourtette' target='_blank'>Fourtette</a> could even manage full-speed smooth music during gameplay, which I had never expected.</p>
 <p>Chances are many of the struggles were no longer necessary in the end, but learning some more tricks (and some gotchas of RISC processors) was a fun adventure at the time.</p>
 <p>Last edit: 2023-08-10</p>
-</main>
+<h3>Links</h3><ul>
+<li><a href='https://codeberg.org/tbsp/VarvaraPSP' target='_blank'>source</a></li>
+</ul></main>
 <footer>
-<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Fri Aug 11 09:14:29 2023
+<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Mon Aug 14 21:37:05 2023
 </em>
 <hr />
 <section>
