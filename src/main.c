@@ -980,7 +980,7 @@ fphtml(FILE *f, Glossary *glo, Lexicon *lex, Term *t, Journal *jou)
 	fputs("<a href='https://creativecommons.org/licenses/by-nc-sa/4.0'><img src='media/icon/cc.svg' /></a>\n", f);
 	/*fputs("<a href='http://webring.xxiivv.com/'><img src='media/icon/rotonde.svg' /></a>\n", f);
 	fputs("<a href='https://lieu.cblgh.org/'><img src='media/icon/lieu.svg' /></a>\n", f);*/
-	fputs("<p>tbsp &copy; 2023 <a href='license.html'>CC-BY-NC-SA 4.0</a></p>\n", f);
+	fputs("<p>Dave VanEe &copy; 2023 <a href='license.html'>CC-BY-NC-SA 4.0</a></p>\n", f);
 	fputs("</section>\n", f);
 	fputs("</footer>\n", f);
 	fputs("</body>\n</html>\n", f);
