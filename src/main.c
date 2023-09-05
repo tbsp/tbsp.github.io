@@ -924,7 +924,7 @@ fphtml(FILE *f, Glossary *glo, Lexicon *lex, Term *t, Journal *jou)
 	fputs("<head>\n", f);
 	fprintf(f, "<meta charset='utf-8'>\n"
 			   "<meta name='description' content='%s' />\n"
-			   "<meta name='author' content='Dave VanEe' />\n"
+			   "<meta name='author' content='tbsp' />\n"
 			   "<meta name='viewport' content='width=device-width, initial-scale=1' />\n"
 			   "<link rel='shortcut icon' type='image/png' href='media/icon/wastingmoves_favicon.png' />\n"
 			   "<link rel='stylesheet' type='text/css' href='links/main.css' />\n"
@@ -980,7 +980,7 @@ fphtml(FILE *f, Glossary *glo, Lexicon *lex, Term *t, Journal *jou)
 	fputs("<a href='https://creativecommons.org/licenses/by-nc-sa/4.0'><img src='media/icon/cc.svg' /></a>\n", f);
 	/*fputs("<a href='http://webring.xxiivv.com/'><img src='media/icon/rotonde.svg' /></a>\n", f);
 	fputs("<a href='https://lieu.cblgh.org/'><img src='media/icon/lieu.svg' /></a>\n", f);*/
-	fputs("<p>Dave VanEe &copy; 2022 <a href='license.html'>CC-BY-NC-SA 4.0</a></p>\n", f);
+	fputs("<p>tbsp &copy; 2023 <a href='license.html'>CC-BY-NC-SA 4.0</a></p>\n", f);
 	fputs("</section>\n", f);
 	fputs("</footer>\n", f);
 	fputs("</body>\n</html>\n", f);
@@ -1019,7 +1019,7 @@ fprss(FILE *f, Journal *jou)
 		fputs("  <pubDate>", f);
 		fpRFC2822(f, itotime(sint(l.date, 6)), 1);
 		fputs("</pubDate>\n", f);
-		fputs("  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>\n", f);
+		fputs("  <dc:creator><![CDATA[tbsp]]></dc:creator>\n", f);
 		fputs("  <description>\n", f);
 		fputs("<![CDATA[", f);
 		if(l.pict)

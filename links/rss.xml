@@ -4,18 +4,29 @@
 <title>wastingmoves</title>
 <link>https://wastingmoves.com/journal.html</link>
 <description>Updates and progress on various projects and day to day events.</description>
-<lastBuildDate>Mon, 14 Aug 2023 00:00:00 +0100</lastBuildDate>
+<lastBuildDate>Tue, 05 Sep 2023 00:00:00 +0100</lastBuildDate>
 <image>
   <url>https://wastingmoves.com/media/icon/rss.png</url>
   <title>Updates and progress on various projects and day to day events.</title>
   <link>https://wastingmoves.com//journal.html</link>
 </image>
 <item>
+  <title>VarvaraPSP reached a performant state</title>
+  <link>https://wastingmoves.com/varvarapsp.html</link>
+  <guid isPermaLink='false'>journal/230808</guid>
+  <pubDate>Tue, 08 Aug 2023 00:00:00 +0100</pubDate>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
+  <description>
+<![CDATA[<figure><a href='https://wastingmoves.com/media/journal/230808.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/230808-680.png'/></a><figcaption>230808: VarvaraPSP reached a performant state</figcaption></figure>
+<p>Filed under <i>development/<a href='https://wastingmoves.com/varvarapsp.html'>varvarapsp</a>: A Varvara VM for PlayStation Portable</i></p>]]>
+  </description>
+</item>
+<item>
   <title>Takare on NES (and the end of Pern books)</title>
   <link>https://wastingmoves.com/takare.html</link>
   <guid isPermaLink='false'>journal/230617</guid>
   <pubDate>Sat, 17 Jun 2023 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/230617.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/230617-680.png'/></a><figcaption>230617: Takare on NES (and the end of Pern books)</figcaption></figure>
 <p>Filed under <i>development/<a href='https://wastingmoves.com/takare.html'>takare</a>: A low-spec tile-based VM based on the Uxn CPU</i></p>]]>
@@ -26,7 +37,7 @@
   <link>https://wastingmoves.com/takalaki.html</link>
   <guid isPermaLink='false'>journal/230319</guid>
   <pubDate>Sun, 19 Mar 2023 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/230319.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/230319-680.png'/></a><figcaption>230319: Early work on Takalaki (and lots of Pern books)</figcaption></figure>
 <p>Filed under <i>development/<a href='https://wastingmoves.com/takalaki.html'>takalaki</a>: Takalaki - A personal virtual machine using the Uxn CPU</i></p>]]>
@@ -37,7 +48,7 @@
   <link>https://wastingmoves.com/varaboy.html</link>
   <guid isPermaLink='false'>journal/221210</guid>
   <pubDate>Sat, 10 Dec 2022 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/221210.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/221210-680.png'/></a><figcaption>221210: Initial release of Varaboy</figcaption></figure>
 <p>Filed under <i>development/<a href='https://wastingmoves.com/varaboy.html'>varaboy</a>: A Game Boy emulator for Uxn/Varvara</i></p>]]>
@@ -47,7 +58,7 @@
   <title>Got the basic Screen device working in luxnemu</title>
   <guid isPermaLink='false'>journal/221109</guid>
   <pubDate>Wed, 09 Nov 2022 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/221109.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/221109-680.png'/></a><figcaption>221109: Got the basic Screen device working in luxnemu</figcaption></figure>
 ]]>
@@ -58,7 +69,7 @@
   <link>https://wastingmoves.com/fruit_pursuit.html</link>
   <guid isPermaLink='false'>journal/221020</guid>
   <pubDate>Thu, 20 Oct 2022 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/221020.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/221020-680.png'/></a><figcaption>221020: Released Fruit Pursuit (Beta)</figcaption></figure>
 <p>Filed under <i>interactive/<a href='https://wastingmoves.com/fruit_pursuit.html'>fruit_pursuit</a>: A match 3 game for Game Boy</i></p>]]>
@@ -68,7 +79,7 @@
   <title>Went to a wedding at the end of the world</title>
   <guid isPermaLink='false'>journal/221010</guid>
   <pubDate>Mon, 10 Oct 2022 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/221010.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/221010-680.png'/></a><figcaption>221010: Went to a wedding at the end of the world</figcaption></figure>
 ]]>
@@ -78,7 +89,7 @@
   <title>Made a postfix calculator for Minicub64</title>
   <guid isPermaLink='false'>journal/220906</guid>
   <pubDate>Tue, 06 Sep 2022 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/220906.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/220906-680.png'/></a><figcaption>220906: Made a postfix calculator for Minicub64</figcaption></figure>
 ]]>
@@ -88,7 +99,7 @@
   <title>Put together some simple GB ASM examples</title>
   <guid isPermaLink='false'>journal/220829</guid>
   <pubDate>Mon, 29 Aug 2022 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/220829.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/220829-680.png'/></a><figcaption>220829: Put together some simple GB ASM examples</figcaption></figure>
 ]]>
@@ -99,7 +110,7 @@
   <link>https://wastingmoves.com/shock_lobster.html</link>
   <guid isPermaLink='false'>journal/220712</guid>
   <pubDate>Tue, 12 Jul 2022 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/220712.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/220712-680.png'/></a><figcaption>220712: Wrote up Shock Lobster development notes</figcaption></figure>
 <p>Filed under <i>interactive/<a href='https://wastingmoves.com/shock_lobster.html'>shock_lobster</a>: A simple action game for Game Boy</i></p>]]>
@@ -110,7 +121,7 @@
   <link>https://wastingmoves.com/uxngb.html</link>
   <guid isPermaLink='false'>journal/220629</guid>
   <pubDate>Wed, 29 Jun 2022 00:00:00 +0100</pubDate>
-  <dc:creator><![CDATA[Dave VanEe]]></dc:creator>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
   <description>
 <![CDATA[<figure><a href='https://wastingmoves.com/media/journal/220629.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/220629-680.png'/></a><figcaption>220629: Initial release of uxngb</figcaption></figure>
 <p>Filed under <i>development/<a href='https://wastingmoves.com/uxngb.html'>uxngb</a>: A Uxn emulator for Game Boy</i></p>]]>
