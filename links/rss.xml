@@ -4,12 +4,23 @@
 <title>wastingmoves</title>
 <link>https://wastingmoves.com/journal.html</link>
 <description>Updates and progress on various projects and day to day events.</description>
-<lastBuildDate>Tue, 05 Sep 2023 00:00:00 +0100</lastBuildDate>
+<lastBuildDate>Mon, 27 Nov 2023 00:00:00 +0100</lastBuildDate>
 <image>
   <url>https://wastingmoves.com/media/icon/rss.png</url>
   <title>Updates and progress on various projects and day to day events.</title>
   <link>https://wastingmoves.com//journal.html</link>
 </image>
+<item>
+  <title>uxnpalm is somewhat usable</title>
+  <link>https://wastingmoves.com/uxnpalm.html</link>
+  <guid isPermaLink='false'>journal/231127</guid>
+  <pubDate>Mon, 27 Nov 2023 00:00:00 +0100</pubDate>
+  <dc:creator><![CDATA[tbsp]]></dc:creator>
+  <description>
+<![CDATA[<figure><a href='https://wastingmoves.com/media/journal/231127.jpg' alt='Click the image for a higher resolution'><img src='https://wastingmoves.com/media/journal/231127-680.png'/></a><figcaption>231127: uxnpalm is somewhat usable</figcaption></figure>
+<p>Filed under <i>development/<a href='https://wastingmoves.com/uxnpalm.html'>uxnpalm</a>: A Uxn emulator for PalmOS</i></p>]]>
+  </description>
+</item>
 <item>
   <title>VarvaraPSP reached a performant state</title>
   <link>https://wastingmoves.com/varvarapsp.html</link>

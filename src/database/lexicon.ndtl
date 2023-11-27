@@ -260,6 +260,19 @@ UXNGB
 		source : https://github.com/tbsp/uxngb
 		uxn : https://wiki.xxiivv.com/site/uxn.html
 
+
+UXNPALM
+	HOST : development
+	BREF : A Uxn emulator for PalmOS
+	BODY
+		PalmOS is the operating system running on a wide range of handheld PDAs from the ~2000s. Many of the earlier devices ran a m68k CPU, and have fairly constrained RAM and processing power, but the keyboard/touch input present an appealing choice for a Varvara/Uxn VM host.
+		### Status
+		The screen/mouse/controller/datetime devices are mostly functional (no start/select buttons, no way to input special characters via the keyboard). The file device is currently not implemented.
+		Performance is acceptable for non-realtime uses, though a little sluggish depending on how much of the screen is updated per frame.
+	LINKS
+		source : https://codeberg.org/tbsp/uxnpalm
+		uxn : https://wiki.xxiivv.com/site/uxn.html
+
 VARVARAPSP
 	HOST : development
 	BREF : A Varvara VM for PlayStation Portable
@@ -277,6 +290,7 @@ VARVARAPSP
 
 	LINKS
 		source : https://codeberg.org/tbsp/VarvaraPSP
+		uxn : https://wiki.xxiivv.com/site/uxn.html
 
 VARABOY
 	HOST : development

@@ -2,29 +2,22 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8'>
-<meta name='description' content='Tools and whatnot.' />
+<meta name='description' content='A Uxn emulator for PalmOS' />
 <meta name='author' content='tbsp' />
 <meta name='viewport' content='width=device-width, initial-scale=1' />
 <link rel='shortcut icon' type='image/png' href='media/icon/wastingmoves_favicon.png' />
 <link rel='stylesheet' type='text/css' href='links/main.css' />
-<title>wastingmoves: development</title>
-<meta property='og:title' content='development' />
+<title>wastingmoves: uxnpalm</title>
+<meta property='og:title' content='uxnpalm' />
 <meta property='og:type' content='website' />
-<meta property='og:description' content='Tools and whatnot.' />
+<meta property='og:description' content='A Uxn emulator for PalmOS' />
 <meta property='og:site_name' content='wastingmoves' />
-<meta property='og:url' content='https://wastingmoves.com/development.html' />
-<meta property='og:image' content='https://wastingmoves.com/media/headers/development-240.png' />
+<meta property='og:url' content='https://wastingmoves.com/uxnpalm.html' />
+<meta property='og:image' content='https://wastingmoves.com/media/headers/uxnpalm-240.png' />
 </head>
 <body>
 <nav>
 <a href='index.html'><img src='media/icon/wastingmoves.svg' alt='wastingmoves' height='100px' width='100px' /></a>
-<ul>
-<li><b><a href='projects.html'>projects/</a></b></li>
-<li><a href='knowledge.html'>knowledge</a></li>
-<li><a href='directory.html'>directory</a></li>
-<li><a href='journal.html'>journal</a></li>
-<li><a href='about.html'>about</a></li>
-</ul>
 <ul>
 <li><a href='interactive.html'>interactive</a></li>
 <li><b><a href='development.html'>development/</a></b></li>
@@ -32,23 +25,25 @@
 <ul>
 <li><a href='simple_gb_asm.html'>simple gb asm</a></li>
 <li><a href='uxngb.html'>uxngb</a></li>
-<li><a href='uxnpalm.html'>uxnpalm</a></li>
+<li><b><a href='uxnpalm.html'>uxnpalm/</a></b></li>
 <li><a href='varvarapsp.html'>varvarapsp</a></li>
 <li><a href='varaboy.html'>varaboy</a></li>
 <li><a href='takalaki.html'>takalaki</a></li>
 <li><a href='takare.html'>takare</a></li>
 </ul>
+<ul>
+</ul>
 </nav>
 <main>
-<h1>Tools and whatnot.</h1>
-<h2><a href='simple_gb_asm.html'>simple gb asm</a></h2>
-<h2><a href='uxngb.html'>uxngb</a></h2>
-<h2><a href='uxnpalm.html'>uxnpalm</a></h2>
-<h2><a href='varvarapsp.html'>varvarapsp</a></h2>
-<h2><a href='varaboy.html'>varaboy</a></h2>
-<h2><a href='takalaki.html'>takalaki</a></h2>
-<h2><a href='takare.html'>takare</a></h2>
-</main>
+<h1>A Uxn emulator for PalmOS</h1>
+<p>PalmOS is the operating system running on a wide range of handheld PDAs from the ~2000s. Many of the earlier devices ran a m68k CPU, and have fairly constrained RAM and processing power, but the keyboard/touch input present an appealing choice for a Varvara/Uxn VM host.</p>
+<h3>Status</h3>
+<p>The screen/mouse/controller/datetime devices are mostly functional (no start/select buttons, no way to input special characters via the keyboard). The file device is currently not implemented.</p>
+<p>Performance is acceptable for non-realtime uses, though a little sluggish depending on how much of the screen is updated per frame.</p>
+<h3>Links</h3><ul>
+<li><a href='https://codeberg.org/tbsp/uxnpalm' target='_blank'>source</a></li>
+<li><a href='https://wiki.xxiivv.com/site/uxn.html' target='_blank'>uxn</a></li>
+</ul></main>
 <footer>
 <img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>Mon Nov 27 11:30:18 2023
 </em>
