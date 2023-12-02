@@ -974,7 +974,7 @@ fphtml(FILE *f, Glossary *glo, Lexicon *lex, Term *t, Journal *jou)
 	fpincoming(f, t);
 	fputs("</main>\n", f);
 	fputs("<footer>\n", f);
-	fprintf(f, "<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a> | last edit: <em>%s</em>\n", ctime(&now));
+	fprintf(f, "<img src='media/icon/arrow_up.svg' /> <a href='#'>Back to top</a>\n");
 	fputs("<hr />\n", f);
 	fputs("<section>\n", f);
 	fputs("<a href='https://creativecommons.org/licenses/by-nc-sa/4.0'><img src='media/icon/cc.svg' /></a>\n", f);

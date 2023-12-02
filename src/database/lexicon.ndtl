@@ -23,7 +23,12 @@ INTERACTIVE
 DEVELOPMENT
 	HOST : projects
 	TYPE : img_portal
-	BREF : Tools and whatnot.
+	BREF : Programming, tools, and whatnot.
+
+DECEMBER ADVENTURE
+	HOST : development
+	TYPE : img_portal
+	BREF : Code something every day
 
 DIRECTORY
 	HOST : index
@@ -410,6 +415,14 @@ TAKARE
 		There are two tone channels, and a noise channel. A simple music driver is included in the VM host, allowing playback from music data stored in ROM.
 		# Implementations
 		An {https://codeberg.org/tbsp/takare-nes early NES implementation} has been created, which only supports basic sprites, and is limited to only 1024 bytes of Uxn RAM (plus the zero page). An alternate "tile" display device for {https://github.com/tbsp/uxngb/tree/master/src/emu_tile uxngb} has also been created in a similar style. It supports some of the background tilemap writing, as well as dynamic tile data.
+
+DECEMBER ADVENTURE 2023
+	HOST : december adventure
+	BREF : December Adventure 2023
+	BODY
+		My goal this year is to spend some time writing uxntal to become more comfortable with the language and Varvara devices.
+		# 2023-12-01
+		Wrote a {https://codeberg.org/tbsp/uxn-clocks/src/branch/main/src/tf-eclipse.tal simple clock} in Uxntal heavily based on {https://git.sr.ht/~rabbits/catclock catclock} and inspired by the {https://tokyoflash.com/collections/watches/products/eclipse-neo-analog-watch Tokyo Flash Eclipse Neo } watch.
 
 META
 	HOST : about
