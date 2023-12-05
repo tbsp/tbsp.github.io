@@ -423,6 +423,10 @@ DECEMBER ADVENTURE 2023
 		My goal this year is to spend some time writing uxntal to become more comfortable with the language and Varvara devices.
 		# 2023-12-01
 		Wrote a {https://codeberg.org/tbsp/uxn-clocks/src/branch/main/src/tf-eclipse.tal simple clock} in Uxntal heavily based on {https://git.sr.ht/~rabbits/catclock catclock} and inspired by the {https://tokyoflash.com/collections/watches/products/eclipse-neo-analog-watch Tokyo Flash Eclipse Neo } watch.
+		# 2023-12-03
+		Tinkered with line/cicle drawing but didn't get very far. Getting a little more comfortable with the language though.
+		# 2023-12-04
+		After worrying too much about optimized line drawing yesterday I returned to tilemaps, which I'm far more comfortable with. I got some {https://codeberg.org/tbsp/uxnvania basic metatiles} working using {https://www.kenney.nl/assets/1-bit-platformer-pack tiles from Kenney}. I also started learning the colemak_dh keymapping a few days ago, which has been quite humbling.
 
 META
 	HOST : about
