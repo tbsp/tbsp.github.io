@@ -427,6 +427,19 @@ DECEMBER ADVENTURE 2023
 		Tinkered with line/cicle drawing but didn't get very far. Getting a little more comfortable with the language though.
 		# 2023-12-04
 		After worrying too much about optimized line drawing yesterday I returned to tilemaps, which I'm far more comfortable with. I got some {https://codeberg.org/tbsp/uxnvania basic metatiles} working using {https://www.kenney.nl/assets/1-bit-platformer-pack tiles from Kenney}. I also started learning the colemak_dh keymapping a few days ago, which has been quite humbling.
+		# 2023-12-06
+		Poked around with {https://git.sr.ht/~rabbits/porporo porporo}, learning about how the wallpaper, menu, and tgachr work.
+		# 2023-12-09
+		Went back to the basics with some fixed-width text rendering.
+		# 2023-12-10
+		Explored directory reading with the file device.
+		# 2023-12-12
+		Added file names and placeholder icons to a grid launcher prototype.
+		# 2023-12-14
+		Created a patch to add expanded ROM launching to the stock uxn launcher.
+		# 2024-01-01
+		I ceased working on personal computing tasks of any kind after Dec 14th. While the concept of December Adventure is a neat one, I don't think it's compatible with my current place in life, and the impact it was having was more stressful than pleasant.
+		I may return to personal computing at a later date if I can find a way to blend it better with the rest of my life.
 
 META
 	HOST : about
