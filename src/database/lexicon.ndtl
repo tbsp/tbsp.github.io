@@ -637,8 +637,7 @@ PLAYING
 	BREF : Vidyagames.
 	BODY
 		This is a list of digital games. For analog games, see {tabletop}.
-		{^list recently played}
-		{^list playlist}
+		{^list playlist 2023}
 
 NOW
 	HOST : personal
